@@ -5,7 +5,7 @@ package xyz.thomasrichards.superxo.game;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Board extends GridGen<Grid> {
+public class Board extends AbsGrid<Grid> {
 	Board() {
 		super(null, null);
 	}

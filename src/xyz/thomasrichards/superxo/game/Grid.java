@@ -5,10 +5,10 @@ package xyz.thomasrichards.superxo.game;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Grid extends GridGen<Cell> {
+public class Grid extends AbsGrid<Cell> {
 	@SuppressWarnings("unchecked")
-	public Grid(Position p, GridGen<Grid> parent) {
-		super(p, (GridGen<Cell>)(GridGen<?>) parent);
+	public Grid(Position p, AbsGrid<Grid> parent) {
+		super(p, (AbsGrid<Cell>)(AbsGrid<?>) parent);
 	}
 
 	protected List<Cell> generateChildren() {

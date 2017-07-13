@@ -1,11 +1,11 @@
 package xyz.thomasrichards.superxo.game;
 
 class Cell {
-    final GridGen<Cell> parent;
+    final AbsGrid<Cell> parent;
     Player owner;
     private final Position pos;
 
-	public Cell(Position p, GridGen<Cell> parent) {
+	public Cell(Position p, AbsGrid<Cell> parent) {
 		this.parent = parent;
 		this.pos = p;
 	}
@@ -14,7 +14,7 @@ class Cell {
         return owner;
     }
 
-	public GridGen<Cell> getParent() {
+	public AbsGrid<Cell> getParent() {
 		return parent;
 	}
 

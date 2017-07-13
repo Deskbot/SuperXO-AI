@@ -4,7 +4,7 @@ import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-public abstract class GridGen<C extends Cell> extends Cell {
+public abstract class AbsGrid<C extends Cell> extends Cell {
 
 	private boolean full = false;
 	private List<C> matrix;
@@ -43,7 +43,7 @@ public abstract class GridGen<C extends Cell> extends Cell {
 
 	//constructor
 
-	public GridGen(Position p, GridGen<Cell> parent) {
+	public AbsGrid(Position p, AbsGrid<Cell> parent) {
 		super(p, parent);
 		this.matrix = this.generateChildren();
 	}
@@ -92,7 +92,7 @@ public abstract class GridGen<C extends Cell> extends Cell {
 	}
 
 	public void updateOwner(C change) {
-		PosDuo[] testCases = GridGen.winCombos.get(change.getPos());
+		PosDuo[] testCases = AbsGrid.winCombos.get(change.getPos());
 		Player owner1 = change.getOwner();
 
 		for (PosDuo pd : testCases) {
