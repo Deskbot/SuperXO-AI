@@ -8,10 +8,9 @@ import java.util.List;
 public class Board extends GridGen<Grid> {
 	Board() {
 		super(null, null);
-		this.setChildren(this.generateChildren());
 	}
 
-	private List<Grid> generateChildren() {
+	protected List<Grid> generateChildren() {
 		Position[] positions = Position.class.getEnumConstants();
 		List<Grid> children = new ArrayList<>();
 

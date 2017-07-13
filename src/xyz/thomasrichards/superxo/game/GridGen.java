@@ -4,7 +4,7 @@ import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-public class GridGen<C extends Cell> extends Cell {
+public abstract class GridGen<C extends Cell> extends Cell {
 
 	private boolean full = false;
 	private List<C> matrix;
@@ -45,6 +45,7 @@ public class GridGen<C extends Cell> extends Cell {
 
 	public GridGen(Position p, GridGen<Cell> parent) {
 		super(p, parent);
+		this.matrix = this.generateChildren();
 	}
 
 	//public
@@ -69,11 +70,6 @@ public class GridGen<C extends Cell> extends Cell {
 		});
 
 		return s;
-	}
-
-	//should be called immediately after instantiation. This is an unfortunate way to deal with generics and having to call super before everything else
-	public void setChildren(List<C> c) {
-		this.matrix = c;
 	}
 
 	public boolean hasSpace() { //if the cell is owned, nothing can be put in, so there is no space
@@ -119,4 +115,8 @@ public class GridGen<C extends Cell> extends Cell {
 	public String toString() {
 		return this.matrix.toString();
 	}
+
+	//private
+
+	protected abstract List<C> generateChildren();
 }
