@@ -3,7 +3,7 @@ package xyz.thomasrichards.superxo.game;
 import java.util.HashSet;
 import java.util.Set;
 
-class Game {
+public class Game {
 	private final Board board;
 	private Cell lastChange;
 	private Log<Move> log;
