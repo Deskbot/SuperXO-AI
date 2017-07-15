@@ -1,1 +1,1 @@
-javac -d out -sourcepath src/  src/xyz/thomasrichards/superxo/*/* -Xlint
+javac -d out -cp src $(find src | grep .java) -Xlint
