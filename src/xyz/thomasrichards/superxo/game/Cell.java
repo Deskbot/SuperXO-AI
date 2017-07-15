@@ -1,6 +1,6 @@
 package xyz.thomasrichards.superxo.game;
 
-class Cell {
+public class Cell {
     final AbsGrid<Cell> parent;
     Player owner;
     private final Position pos;

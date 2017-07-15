@@ -64,6 +64,14 @@ public class Game {
 		return this.board.getOwner();
 	}
 
+	public Board getBoard() {
+		return this.board;
+	}
+
+	public Player getTurnPlayer() {
+		return this.turnPlayer;
+	}
+
 	//private
 
 	private void toggleTurnPlayer() {
