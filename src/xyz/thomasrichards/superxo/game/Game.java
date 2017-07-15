@@ -34,7 +34,11 @@ public class Game {
 		}
 	}
 
-	public void inputTurn(Position gridPos, Position cellPos) throws InvalidMoveException, GameAlreadyWonException {
+	public void inputTurn(Move m) throws InvalidMoveException {
+		inputTurn(m.getGridPos(), m.getCellPos());
+	}
+
+	public void inputTurn(Position gridPos, Position cellPos) throws InvalidMoveException {
 		if (this.board.getOwner() != null)
 			throw new GameAlreadyWonException(this.board.getOwner() + " has already won.");
 

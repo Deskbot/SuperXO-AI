@@ -11,6 +11,18 @@ class Move {
 		this.cellPos = cellPos;
 	}
 
+	public Player getPlayer() {
+		return this.player;
+	}
+
+	public Position getGridPos() {
+		return this.gridPos;
+	}
+
+	public Position getCellPos() {
+		return this.cellPos;
+	}
+
 	public String toString() {
 		return "[" + this.player + "," + this.gridPos + "," + this.cellPos + "]";
 	}
