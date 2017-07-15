@@ -12,6 +12,7 @@ public class Game {
 	public Game() {
 		this.board = new Board();
 		this.log = new Log<>();
+		this.turnPlayer = Player.X;
 	}
 
 	public Set<Grid> getValidGrids() {
@@ -62,7 +63,7 @@ public class Game {
 	//private
 
 	private void toggleTurnPlayer() {
-		if (this.turnPlayer == Player.AI) this.turnPlayer = Player.HUMAN;
-		else this.turnPlayer = Player.AI;
+		if (this.turnPlayer == Player.X) this.turnPlayer = Player.O;
+		else this.turnPlayer = Player.X;
 	}
 }

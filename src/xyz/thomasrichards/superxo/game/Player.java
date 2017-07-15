@@ -1,6 +1,10 @@
 package xyz.thomasrichards.superxo.game;
 
 public enum Player {
-    AI,
-    HUMAN
+    X,
+    O;
+
+    public Player opponent() {
+    	return this == X ? O : X;
+	}
 }
