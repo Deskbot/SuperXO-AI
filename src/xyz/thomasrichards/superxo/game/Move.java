@@ -1,6 +1,6 @@
 package xyz.thomasrichards.superxo.game;
 
-class Move {
+public class Move {
 	private final Player player;
 	private final Position gridPos;
 	private final Position cellPos;

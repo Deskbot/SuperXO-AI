@@ -6,13 +6,16 @@ import java.util.Set;
 public class Game {
 	private final Board board;
 	private Cell lastChange;
-	private Log<Move> log;
 	private Player turnPlayer;
 
 	public Game() {
 		this.board = new Board();
-		this.log = new Log<>();
 		this.turnPlayer = Player.X;
+	}
+
+	public Game(Board board, Player startPlayer) {
+		this.board = board;
+		this.turnPlayer = startPlayer;
 	}
 
 	public Set<Grid> getValidGrids() {
@@ -34,11 +37,11 @@ public class Game {
 		}
 	}
 
-	public void inputTurn(Move m) throws InvalidMoveException {
+	public void inputTurn(Move m) {
 		inputTurn(m.getGridPos(), m.getCellPos());
 	}
 
-	public void inputTurn(Position gridPos, Position cellPos) throws InvalidMoveException {
+	public void inputTurn(Position gridPos, Position cellPos) {
 		if (this.board.getOwner() != null)
 			throw new GameAlreadyWonException(this.board.getOwner() + " has already won.");
 
@@ -48,7 +51,6 @@ public class Game {
 		if (g.hasSpace() && c.getOwner() == null) { //move is valid
 			c.setOwner(this.turnPlayer);
 			this.lastChange = c;
-			this.log.write(new Move(this.turnPlayer, gridPos, cellPos));
 			this.toggleTurnPlayer();
 
 		} else {
@@ -70,6 +72,10 @@ public class Game {
 
 	public Player getTurnPlayer() {
 		return this.turnPlayer;
+	}
+
+	public Game duplicate() {
+		return new Game((Board) this.board.duplicate(), this.turnPlayer);
 	}
 
 	//private

@@ -9,11 +9,11 @@ import java.util.function.Predicate;
 import static xyz.thomasrichards.superxo.game.Position.*;
 
 public abstract class AbsGrid<C extends Cell> extends Cell {
-
 	private boolean full = false;
 	private List<C> matrix;
 
 	//static
+
 	public static final Set<Trio<Position>> winTrios = new TreeSet<>();
 
 	static {
@@ -162,6 +162,22 @@ public abstract class AbsGrid<C extends Cell> extends Cell {
 
 	public String toString() {
 		return this.matrix.toString();
+	}
+
+	@SuppressWarnings("unchecked")
+	public AbsGrid<C> duplicate() {
+		List<C> newChildren = new ArrayList<>();
+
+		this.forEachChild(c -> {
+			newChildren.add((C) c.duplicate());
+		});
+
+		return new AbsGrid<C>(this.pos, this.parent) {
+			@Override
+			protected List<C> generateChildren() {
+				return newChildren;
+			}
+		};
 	}
 
 	//protected

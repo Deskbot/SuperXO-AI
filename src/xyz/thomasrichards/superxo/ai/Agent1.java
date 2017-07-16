@@ -16,6 +16,11 @@ public class Agent1 extends Agent {
 		super(depth, symbol);
 	}
 
+	public Move chooseMove(Game game) {
+
+		return null;
+	}
+
 	protected Function<Game, Double> defineHeuristic() {
 		return g -> {
 			Player winner = g.getWinner();

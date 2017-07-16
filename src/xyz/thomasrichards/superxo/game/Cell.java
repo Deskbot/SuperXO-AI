@@ -3,7 +3,7 @@ package xyz.thomasrichards.superxo.game;
 public class Cell {
     final AbsGrid<Cell> parent;
     Player owner;
-    private final Position pos;
+    protected final Position pos;
 
 	public Cell(Position p, AbsGrid<Cell> parent) {
 		this.parent = parent;
@@ -27,7 +27,15 @@ public class Cell {
         this.parent.updateOwner(this);
     }
 
+    public boolean isEmpty() {
+		return this.owner == null;
+	}
+
     public String toString() {
         return this.owner == null ? "null" : this.owner.toString();
     }
+
+    public Cell duplicate() {
+		return new Cell(this.pos, this.parent);
+	}
 }
