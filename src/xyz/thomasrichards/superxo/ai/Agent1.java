@@ -12,13 +12,25 @@ import static java.lang.Double.max;
 
 public class Agent1 extends Agent {
 
-	public Agent1(int depth, Player symbol) {
+	public Agent1(Player symbol, int depth) {
 		super(depth, symbol);
 	}
 
 	public Move chooseMove(Game game) {
+		GameTree gt = new GameTree(game);
+		double topScore = 0.0;
+		double tmp;
+		Move topMove = null;
+		
+		for (Move move : gt.getEdges()) {
+			tmp = this.minimax.getValue(gt.getChild(move), this.depth, true);
+			if (tmp > topScore) {
+				topScore = tmp;
+				topMove = move;
+			}
+		}
 
-		return null;
+		return topMove;
 	}
 
 	protected Function<Game, Double> defineHeuristic() {

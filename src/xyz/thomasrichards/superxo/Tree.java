@@ -1,19 +1,19 @@
 package xyz.thomasrichards.superxo;
 
-import java.util.Iterator;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
-import java.util.TreeSet;
 
-public class Tree<T> {
-	protected T value;
-	protected Set<Tree<T>> children;
+public class Tree<E,V> implements ISmallTree<E,V> {
+	protected V value;
+	protected Map<E,Tree<E,V>> children;
 
-	public Tree(T value) {
-		this.children = new TreeSet<>();
+	public Tree(V value) {
+		this.children = new HashMap<>();
 		this.value = value;
 	}
 
-	public T getValue() {
+	public V getValue() {
 		return this.value;
 	}
 
@@ -21,11 +21,19 @@ public class Tree<T> {
 		return this.children.isEmpty();
 	}
 
-	public void addChild(Tree<T> c) {
-		this.children.add(c);
+	public void addChild(E edge, Tree<E,V> subtree) {
+		this.children.put(edge, subtree);
 	}
 
-	public Iterator<Tree<T>> getChildren() {
-		return children.iterator();
+	public Tree<E,V> getChild(E edge) {
+		return this.children.get(edge);
+	}
+
+	public Set<E> getEdges() {
+		return this.children.keySet();
+	}
+
+	public Map<E, Tree<E,V>> getChildren() {
+		return this.children;
 	}
 }

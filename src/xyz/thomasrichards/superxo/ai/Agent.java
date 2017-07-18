@@ -9,7 +9,7 @@ import java.util.function.Function;
 public abstract class Agent {
 	protected int depth;
 	protected final Function<Game, Double> heuristic;
-	protected final Minimax<Game> minimax;
+	protected final Minimax<Move, Game> minimax;
 	protected Player symbol;
 
 	public Agent(int depth, Player symbol) {

@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Game {
-	private final Board board;
+	private final AbsGrid<Grid> board;
 	private Cell lastChange;
 	private Player turnPlayer;
 
@@ -13,7 +13,7 @@ public class Game {
 		this.turnPlayer = Player.X;
 	}
 
-	public Game(Board board, Player startPlayer) {
+	public Game(AbsGrid<Grid> board, Player startPlayer) {
 		this.board = board;
 		this.turnPlayer = startPlayer;
 	}
@@ -37,11 +37,12 @@ public class Game {
 		}
 	}
 
-	public void inputTurn(Move m) {
+	public Game inputTurn(Move m) {
 		inputTurn(m.getGridPos(), m.getCellPos());
+		return this;
 	}
 
-	public void inputTurn(Position gridPos, Position cellPos) {
+	public Game inputTurn(Position gridPos, Position cellPos) {
 		if (this.board.getOwner() != null)
 			throw new GameAlreadyWonException(this.board.getOwner() + " has already won.");
 
@@ -56,6 +57,8 @@ public class Game {
 		} else {
 			throw new InvalidMoveException("The move {grid: " + gridPos + ", cell: " + cellPos + "} is invalid in game: \n" + this.board);
 		}
+
+		return this;
 	}
 
 	public boolean isWon() {
@@ -66,7 +69,7 @@ public class Game {
 		return this.board.getOwner();
 	}
 
-	public Board getBoard() {
+	public AbsGrid<Grid> getBoard() {
 		return this.board;
 	}
 
@@ -75,7 +78,7 @@ public class Game {
 	}
 
 	public Game duplicate() {
-		return new Game((Board) this.board.duplicate(), this.turnPlayer);
+		return new Game(this.board.duplicate(), this.turnPlayer);
 	}
 
 	//private

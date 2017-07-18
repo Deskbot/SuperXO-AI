@@ -26,4 +26,8 @@ public class Move {
 	public String toString() {
 		return "[" + this.player + "," + this.gridPos + "," + this.cellPos + "]";
 	}
+
+	public boolean equals(Move m) {
+		return this.player == m.getPlayer() && this.gridPos == m.getGridPos() && this.cellPos == m.getCellPos();
+	}
 }

@@ -1,1 +1,1 @@
-javac -d testout -cp src test/*.java
+javac -d out -cp src src/test/*.java
