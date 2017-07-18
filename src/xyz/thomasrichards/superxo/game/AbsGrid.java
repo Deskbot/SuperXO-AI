@@ -30,32 +30,32 @@ public abstract class AbsGrid<C extends Cell> extends Cell {
 	public static final Map<Position, PosDuo[]> winDuos = new HashMap<>();
 
 	static {
-		winDuos.put(Position.TL,
-				new PosDuo[]{new PosDuo(Position.TM, Position.TR), new PosDuo(Position.ML, Position.BL), new PosDuo(Position.MM, Position.BR)}
+		winDuos.put(TL,
+				new PosDuo[]{new PosDuo(TM, TR), new PosDuo(ML, BL), new PosDuo(MM, BR)}
 		);
-		winDuos.put(Position.TM,
-				new PosDuo[]{new PosDuo(Position.TL, Position.TR), new PosDuo(Position.MM, Position.BM)}
+		winDuos.put(TM,
+				new PosDuo[]{new PosDuo(TL, TR), new PosDuo(MM, BM)}
 		);
-		winDuos.put(Position.TR,
-				new PosDuo[]{new PosDuo(Position.TL, Position.TM), new PosDuo(Position.MR, Position.BR), new PosDuo(Position.BL, Position.MM)}
+		winDuos.put(TR,
+				new PosDuo[]{new PosDuo(TL, TM), new PosDuo(MR, BR), new PosDuo(BL, MM)}
 		);
-		winDuos.put(Position.ML,
-				new PosDuo[]{new PosDuo(Position.MM, Position.MR), new PosDuo(Position.TL, Position.BL)}
+		winDuos.put(ML,
+				new PosDuo[]{new PosDuo(MM, MR), new PosDuo(TL, BL)}
 		);
-		winDuos.put(Position.MM,
-				new PosDuo[]{new PosDuo(Position.ML, Position.MR), new PosDuo(Position.TM, Position.BM), new PosDuo(Position.TL, Position.BR), new PosDuo(Position.BL, Position.TR)}
+		winDuos.put(MM,
+				new PosDuo[]{new PosDuo(ML, MR), new PosDuo(TM, BM), new PosDuo(TL, BR), new PosDuo(BL, TR)}
 		);
-		winDuos.put(Position.MR,
-				new PosDuo[]{new PosDuo(Position.ML, Position.MM), new PosDuo(Position.TR, Position.BR)}
+		winDuos.put(MR,
+				new PosDuo[]{new PosDuo(ML, MM), new PosDuo(TR, BR)}
 		);
-		winDuos.put(Position.BL,
-				new PosDuo[]{new PosDuo(Position.BM, Position.BR), new PosDuo(Position.TL, Position.ML), new PosDuo(Position.MM, Position.TR)}
+		winDuos.put(BL,
+				new PosDuo[]{new PosDuo(BM, BR), new PosDuo(TL, ML), new PosDuo(MM, TR)}
 		);
-		winDuos.put(Position.BM,
-				new PosDuo[]{new PosDuo(Position.BL, Position.BR), new PosDuo(Position.TM, Position.MM)}
+		winDuos.put(BM,
+				new PosDuo[]{new PosDuo(BL, BR), new PosDuo(TM, MM)}
 		);
-		winDuos.put(Position.BR,
-				new PosDuo[]{new PosDuo(Position.BL, Position.BM), new PosDuo(Position.TR, Position.MR), new PosDuo(Position.TL, Position.MM)}
+		winDuos.put(BR,
+				new PosDuo[]{new PosDuo(BL, BM), new PosDuo(TR, MR), new PosDuo(TL, MM)}
 		);
 	}
 
