@@ -37,11 +37,12 @@ public class Game {
 		}
 	}
 
-	public void inputTurn(Move m) {
+	public Game inputTurn(Move m) {
 		inputTurn(m.getGridPos(), m.getCellPos());
+		return this;
 	}
 
-	public void inputTurn(Position gridPos, Position cellPos) {
+	public Game inputTurn(Position gridPos, Position cellPos) {
 		if (this.board.getOwner() != null)
 			throw new GameAlreadyWonException(this.board.getOwner() + " has already won.");
 
@@ -56,6 +57,8 @@ public class Game {
 		} else {
 			throw new InvalidMoveException("The move {grid: " + gridPos + ", cell: " + cellPos + "} is invalid in game: \n" + this.board);
 		}
+
+		return this;
 	}
 
 	public boolean isWon() {
@@ -66,7 +69,7 @@ public class Game {
 		return this.board.getOwner();
 	}
 
-	public Board getBoard() {
+	public AbsGrid<Grid> getBoard() {
 		return this.board;
 	}
 
@@ -75,7 +78,7 @@ public class Game {
 	}
 
 	public Game duplicate() {
-		return new Game((Board) this.board.duplicate(), this.turnPlayer);
+		return new Game(this.board.duplicate(), this.turnPlayer);
 	}
 
 	//private

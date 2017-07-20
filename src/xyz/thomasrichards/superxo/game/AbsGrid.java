@@ -14,7 +14,7 @@ public abstract class AbsGrid<C extends Cell> extends Cell {
 
 	//static
 
-	public static final Set<Trio<Position>> winTrios = new TreeSet<>();
+	private static final Set<Trio<Position>> winTrios = new HashSet<>();
 
 	static {
 		winTrios.add(new Trio<>(TL, TM, TR));
@@ -94,7 +94,7 @@ public abstract class AbsGrid<C extends Cell> extends Cell {
 		return this.owner != null || this.isFull();
 	}
 
-	boolean isFull() {
+	private boolean isFull() {
 		if (this.full) return true;
 
 		for (C c : this.matrix) {
@@ -124,7 +124,7 @@ public abstract class AbsGrid<C extends Cell> extends Cell {
 		}
 	}
 
-	public void forEachChild(Consumer<C> f) {
+	protected void forEachChild(Consumer<C> f) {
 		this.matrix.forEach(f);
 	}
 
@@ -162,22 +162,6 @@ public abstract class AbsGrid<C extends Cell> extends Cell {
 
 	public String toString() {
 		return this.matrix.toString();
-	}
-
-	@SuppressWarnings("unchecked")
-	public AbsGrid<C> duplicate() {
-		List<C> newChildren = new ArrayList<>();
-
-		this.forEachChild(c -> {
-			newChildren.add((C) c.duplicate());
-		});
-
-		return new AbsGrid<C>(this.pos, this.parent) {
-			@Override
-			protected List<C> generateChildren() {
-				return newChildren;
-			}
-		};
 	}
 
 	//protected

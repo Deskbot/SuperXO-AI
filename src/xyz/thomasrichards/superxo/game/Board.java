@@ -20,4 +20,17 @@ public class Board extends AbsGrid<Grid> {
 
 		return children;
 	}
+
+	public Board duplicate() {
+		List<Grid> newChildren = new ArrayList<>();
+
+		this.forEachChild(c -> newChildren.add(c.duplicate()));
+
+		return new Board() {
+			@Override
+			protected List<Grid> generateChildren() {
+				return newChildren;
+			}
+		};
+	}
 }

@@ -6,9 +6,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Grid extends AbsGrid<Cell> {
+	private Board parent;
+
 	@SuppressWarnings("unchecked")
-	public Grid(Position p, AbsGrid<Grid> parent) {
+	public Grid(Position p, Board parent) {
 		super(p, (AbsGrid<Cell>)(AbsGrid<?>) parent);
+		this.parent = parent;
 	}
 
 	protected List<Cell> generateChildren() {
@@ -20,5 +23,18 @@ public class Grid extends AbsGrid<Cell> {
 		}
 
 		return children;
+	}
+
+	public Grid duplicate() {
+		List<Cell> newChildren = new ArrayList<>();
+
+		this.forEachChild(c -> newChildren.add(c.duplicate()));
+
+		return new Grid(this.pos, this.parent) {
+			@Override
+			protected List<Cell> generateChildren() {
+				return newChildren;
+			}
+		};
 	}
 }
