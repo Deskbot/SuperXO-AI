@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Game {
-	private final AbsGrid<Grid> board;
+	private final Board board;
 	private Cell lastChange;
 	private Player turnPlayer;
 
@@ -13,7 +13,7 @@ public class Game {
 		this.turnPlayer = Player.X;
 	}
 
-	public Game(AbsGrid<Grid> board, Player startPlayer) {
+	public Game(Board board, Player startPlayer) {
 		this.board = board;
 		this.turnPlayer = startPlayer;
 	}

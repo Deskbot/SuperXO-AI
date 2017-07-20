@@ -124,7 +124,7 @@ public abstract class AbsGrid<C extends Cell> extends Cell {
 		}
 	}
 
-	private void forEachChild(Consumer<C> f) {
+	protected void forEachChild(Consumer<C> f) {
 		this.matrix.forEach(f);
 	}
 
@@ -162,20 +162,6 @@ public abstract class AbsGrid<C extends Cell> extends Cell {
 
 	public String toString() {
 		return this.matrix.toString();
-	}
-
-	@SuppressWarnings("unchecked")
-	public AbsGrid<C> duplicate() {
-		List<C> newChildren = new ArrayList<>();
-
-		this.forEachChild(c -> newChildren.add((C) c.duplicate()));
-
-		return new AbsGrid<C>(this.pos, this.parent) {
-			@Override
-			protected List<C> generateChildren() {
-				return newChildren;
-			}
-		};
 	}
 
 	//protected
