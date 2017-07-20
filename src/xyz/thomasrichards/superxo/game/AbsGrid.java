@@ -91,18 +91,17 @@ public abstract class AbsGrid<C extends Cell> extends Cell {
 	}
 
 	public boolean hasSpace() { //if the cell is owned, nothing can be put in, so there is no space
-		return this.owner != null || this.isFull();
+		return this.owner == null && !this.isFull();
 	}
 
 	private boolean isFull() {
 		if (this.full) return true;
 
 		for (C c : this.matrix) {
-			if (c.getOwner() != null) return false;
+			if (c.getOwner() == null) return false;
 		}
 
-		this.full = true;
-		return true;
+		return this.full = true;
 	}
 
 	public boolean isWon() {
