@@ -1,7 +1,8 @@
-import xyz.thomasrichards.superxo.*;
+package xyz.thomasrichards.superxo.test;
+
 import xyz.thomasrichards.superxo.game.*;
 
-public class SampleGame {
+class SampleGame {
 	public static void main(String[] args) {
 		Game g = new Game();
 		try {

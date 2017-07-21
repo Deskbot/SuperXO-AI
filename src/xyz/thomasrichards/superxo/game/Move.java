@@ -11,7 +11,7 @@ public class Move {
 		this.cellPos = cellPos;
 	}
 
-	public Player getPlayer() {
+	private Player getPlayer() {
 		return this.player;
 	}
 

@@ -1,7 +1,7 @@
 package xyz.thomasrichards.superxo;
 
 public class Duo<T> extends Tuple2<T, T> implements MatchTuple<T> {
-	public Duo(T t, T u) {
+	protected Duo(T t, T u) {
 		super(t, u);
 	}
 

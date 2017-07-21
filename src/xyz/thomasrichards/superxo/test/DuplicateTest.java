@@ -4,7 +4,7 @@ import xyz.thomasrichards.superxo.game.Game;
 
 import static xyz.thomasrichards.superxo.game.Position.*;
 
-public class DuplicateTest {
+class DuplicateTest {
 	public static void main(String[] args) {
 		Game g = new Game();
 		g.inputTurn(TL,TR);

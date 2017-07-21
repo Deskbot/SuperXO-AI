@@ -1,16 +1,14 @@
 package xyz.thomasrichards.superxo;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 
 public interface ISmallTree<E,V> {
 
-	public V getValue();
+	V getValue();
 
-	public abstract boolean isLeaf();
+	boolean isLeaf();
 
-	public abstract ISmallTree<E,V> getChild(E edge);
+	ISmallTree<E,V> getChild(E edge);
 
-	public Set<E> getEdges();
+	Set<E> getEdges();
 }

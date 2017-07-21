@@ -61,8 +61,7 @@ public abstract class AbsGrid<C extends Cell> extends Cell {
 
 	//constructor
 
-	public AbsGrid(Position p, AbsGrid<Cell> parent) {
-		super(p, parent);
+	AbsGrid(Position pos, AbsGrid<Cell> parent) {
 		super(pos, parent);
 		this.matrix = this.generateChildren();
 	}
@@ -78,7 +77,7 @@ public abstract class AbsGrid<C extends Cell> extends Cell {
 		return this.matrix.get(p.getIndex());
 	}
 
-	public Set<C> getChildren() {
+	Set<C> getChildren() {
 		final Set<C> s = new HashSet<>();
 
 		this.forEachChild(s::add);
@@ -96,7 +95,7 @@ public abstract class AbsGrid<C extends Cell> extends Cell {
 		return s;
 	}
 
-	public boolean hasSpace() { //if the cell is owned, nothing can be put in, so there is no space
+	boolean hasSpace() { //if the cell is owned, nothing can be put in, so there is no space
 		return this.owner == null && !this.isFull();
 	}
 
@@ -110,11 +109,11 @@ public abstract class AbsGrid<C extends Cell> extends Cell {
 		return this.full = true;
 	}
 
-	public boolean isWon() {
+	boolean isWon() {
 		return this.owner != null;
 	}
 
-	public void updateOwner(C change) {
+	void updateOwner(C change) {
 		PosDuo[] testCases = AbsGrid.winDuos.get(change.getPos());
 		Player owner1 = change.getOwner();
 
@@ -132,7 +131,7 @@ public abstract class AbsGrid<C extends Cell> extends Cell {
 		}
 	}
 
-	protected void forEachChild(Consumer<C> f) {
+	void forEachChild(Consumer<C> f) {
 		this.matrix.forEach(f);
 	}
 

@@ -4,7 +4,7 @@ package xyz.thomasrichards.superxo.ai;
 
 import xyz.thomasrichards.superxo.Trio;
 
-public class DoubleTrio extends Trio<Double> {
+class DoubleTrio extends Trio<Double> {
 	public DoubleTrio(Double a, Double b, Double c) {
 		super(a,b,c);
 	}

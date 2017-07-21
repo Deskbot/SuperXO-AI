@@ -3,9 +3,9 @@ package xyz.thomasrichards.superxo.game;
 public class Cell {
     final AbsGrid<Cell> parent;
     Player owner;
-    protected final Position pos;
+    final Position pos;
 
-	public Cell(Position p, AbsGrid<Cell> parent) {
+	Cell(Position p, AbsGrid<Cell> parent) {
 		this.parent = parent;
 		this.pos = p;
 	}

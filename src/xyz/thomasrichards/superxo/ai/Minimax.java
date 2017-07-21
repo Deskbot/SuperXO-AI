@@ -1,7 +1,6 @@
 package xyz.thomasrichards.superxo.ai;
 
 import xyz.thomasrichards.superxo.ISmallTree;
-import xyz.thomasrichards.superxo.Tree;
 
 import java.util.function.Function;
 

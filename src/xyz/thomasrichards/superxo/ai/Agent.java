@@ -7,12 +7,12 @@ import xyz.thomasrichards.superxo.game.Player;
 import java.util.function.Function;
 
 public abstract class Agent {
-	protected int depth;
-	protected final Function<Game, Double> heuristic;
-	protected final Minimax<Move, Game> minimax;
-	protected Player symbol;
+	final int depth;
+	private final Function<Game, Double> heuristic;
+	final Minimax<Move, Game> minimax;
+	final Player symbol;
 
-	public Agent(int depth, Player symbol) {
+	Agent(int depth, Player symbol) {
 		this.depth = depth;
 		this.symbol = symbol;
 		this.heuristic = this.defineHeuristic();

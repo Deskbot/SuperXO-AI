@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Grid extends AbsGrid<Cell> {
-	private Board parent;
+	private final Board parent;
 
 	@SuppressWarnings("unchecked")
 	public Grid(Position pos, Board parent) {
