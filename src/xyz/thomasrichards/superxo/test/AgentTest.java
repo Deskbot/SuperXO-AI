@@ -17,10 +17,12 @@ class AgentTest {
 		Agent turnPlayer;
 		Move move;
 
-		while (g.getWinner() == null) {
+		while (!g.isWon()) {
 			turnPlayer = g.getTurnPlayer() == Player.X ? ai1 : ai2;
-			move = turnPlayer.chooseMove(g);
+			move = turnPlayer.chooseMove(g.duplicate());
 			g.inputTurn(move);
 		}
+
+		System.out.println(g.getWinner());
 	}
 }

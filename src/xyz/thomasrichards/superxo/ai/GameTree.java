@@ -9,9 +9,9 @@ import java.util.Map;
 import java.util.Set;
 
 class GameTree implements ISmallTree<Move, Game> {
-	private boolean edgesCalculated = false;
-	private Game value;
-	private Map<Move,GameTree> children;
+	private Set<Move> edges;
+	private final Game value;
+	private final Map<Move,GameTree> children;
 
 	GameTree(Game g) {
 		this.children = new HashMap<>();
@@ -25,26 +25,26 @@ class GameTree implements ISmallTree<Move, Game> {
 	public GameTree getChild(Move m) {
 		if (this.children.containsKey(m)) return this.children.get(m);
 
-		GameTree newChild = new GameTree(this.value.duplicate().inputTurn(m));
+		Game g = this.value.duplicate();
+		g.inputTurn(m);
+		GameTree newChild = new GameTree(g);
 		this.children.put(m, newChild);
 		return newChild;
 	}
 
 	public Set<Move> getEdges() {
-		if (this.edgesCalculated) return this.children.keySet();
+		if (this.edges != null) return this.edges;
 
-		this.edgesCalculated = true;
-
-		Set<Move> possibleMoves = new HashSet<>();
+		this.edges = new HashSet<>();
 		Set<Grid> gridChoices = this.value.getValidGrids();
 
 		for (Grid g : gridChoices) {
 			for (Cell c : g.getChildrenThat(Cell::isEmpty)) {
-				possibleMoves.add(new Move(this.value.getTurnPlayer(), g.getPos(), c.getPos()));
+				this.edges.add(new Move(this.value.getTurnPlayer(), g.getPos(), c.getPos()));
 			}
 		}
 
-		return possibleMoves;
+		return this.edges;
 	}
 
 	public boolean isLeaf() {

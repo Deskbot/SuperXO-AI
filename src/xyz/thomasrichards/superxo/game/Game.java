@@ -5,7 +5,7 @@ import java.util.Set;
 
 public class Game {
 	private final Board board;
-	private Cell lastChange;
+	private Position lastCellPosUsed;
 	private Player turnPlayer;
 
 	public Game() {
@@ -13,17 +13,18 @@ public class Game {
 		this.turnPlayer = Player.X;
 	}
 
-	public Game(Board board, Player startPlayer) {
+	private Game(Board board, Position lastCellPosUsed, Player startPlayer) {
 		this.board = board;
+		this.lastCellPosUsed = lastCellPosUsed;
 		this.turnPlayer = startPlayer;
 	}
 
 	public Set<Grid> getValidGrids() {
-		if (this.lastChange == null) { //for the first turn
+		if (this.lastCellPosUsed == null) { //for the first turn
 			return this.board.getChildren();
 
 		} else {
-			Position nextGridPos = this.lastChange.getPos();
+			Position nextGridPos = this.lastCellPosUsed;
 			Grid targetGrid = this.board.getChild(nextGridPos);
 
 			if (targetGrid.hasSpace()) {//targetGrid is insert-into-able
@@ -37,13 +38,12 @@ public class Game {
 		}
 	}
 
-	public Game inputTurn(Move m) {
+	public void inputTurn(Move m) {
 		inputTurn(m.getGridPos(), m.getCellPos());
-		return this;
 	}
 
-	public Game inputTurn(Position gridPos, Position cellPos) {
-		if (this.board.getOwner() != null)
+	public void inputTurn(Position gridPos, Position cellPos) {
+		if (this.board.isWon())
 			throw new GameAlreadyWonException(this.board.getOwner() + " has already won.");
 
 		Grid g = this.board.getChild(gridPos);
@@ -51,14 +51,12 @@ public class Game {
 
 		if (g.hasSpace() && c.getOwner() == null) { //move is valid
 			c.setOwner(this.turnPlayer);
-			this.lastChange = c;
+			this.lastCellPosUsed = cellPos;
 			this.toggleTurnPlayer();
 
 		} else {
 			throw new InvalidMoveException("The move {grid: " + gridPos + ", cell: " + cellPos + "} is invalid in game: \n" + this.board);
 		}
-
-		return this;
 	}
 
 	public boolean isWon() {
@@ -78,7 +76,7 @@ public class Game {
 	}
 
 	public Game duplicate() {
-		return new Game(this.board.duplicate(), this.turnPlayer);
+		return new Game(this.board.duplicate(), this.lastCellPosUsed, this.turnPlayer);
 	}
 
 	//private

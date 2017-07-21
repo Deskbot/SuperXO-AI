@@ -10,6 +10,12 @@ public class Cell {
 		this.pos = p;
 	}
 
+	Cell(Position p, AbsGrid<Cell> parent, Player owner) {
+		this.owner = owner;
+		this.parent = parent;
+		this.pos = p;
+	}
+
     public Player getOwner() {
         return owner;
     }
@@ -32,10 +38,10 @@ public class Cell {
 	}
 
     public String toString() {
-        return this.owner == null ? "null" : this.owner.toString();
+        return "(" + (this.owner == null ? "null" : this.owner.toString()) + ")";
     }
 
-    public Cell duplicate() {
-		return new Cell(this.pos, this.parent);
+    Cell duplicate(AbsGrid<Cell> parent) {
+		return new Cell(this.pos, parent, this.owner);
 	}
 }

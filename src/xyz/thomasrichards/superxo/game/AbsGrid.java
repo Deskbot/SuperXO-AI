@@ -63,6 +63,12 @@ public abstract class AbsGrid<C extends Cell> extends Cell {
 
 	public AbsGrid(Position p, AbsGrid<Cell> parent) {
 		super(p, parent);
+		super(pos, parent);
+		this.matrix = this.generateChildren();
+	}
+
+	AbsGrid(Position p, AbsGrid<Cell> parent, Player owner) {
+		super(p, parent, owner);
 		this.matrix = this.generateChildren();
 	}
 
@@ -118,7 +124,10 @@ public abstract class AbsGrid<C extends Cell> extends Cell {
 
 			if (owner1 == owner2 && owner2 == owner3) { //see if controllers of all cells match
 				this.owner = owner1;
-				if (this.parent != null) this.parent.updateOwner(this);
+				if (this.parent != null) {
+					this.parent.updateOwner(this);
+					break;
+				}
 			}
 		}
 	}
@@ -160,7 +169,7 @@ public abstract class AbsGrid<C extends Cell> extends Cell {
 	}
 
 	public String toString() {
-		return this.matrix.toString();
+		return this.pos + ":" + this.matrix.toString();
 	}
 
 	//protected

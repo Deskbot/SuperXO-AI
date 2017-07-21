@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Board extends AbsGrid<Grid> {
+
 	Board() {
 		super(null, null);
 	}
@@ -22,13 +23,11 @@ public class Board extends AbsGrid<Grid> {
 	}
 
 	public Board duplicate() {
-		List<Grid> newChildren = new ArrayList<>();
-
-		this.forEachChild(c -> newChildren.add(c.duplicate()));
-
 		return new Board() {
 			@Override
 			protected List<Grid> generateChildren() {
+				List<Grid> newChildren = new ArrayList<>();
+				Board.this.forEachChild(c -> newChildren.add(c.duplicate(this)));
 				return newChildren;
 			}
 		};

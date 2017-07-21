@@ -24,7 +24,7 @@ public class Agent1 extends Agent {
 		
 		for (Move move : gt.getEdges()) {
 			tmp = this.minimax.getValue(gt.getChild(move), this.depth, true);
-			if (tmp > topScore) {
+			if (tmp > topScore || topMove == null) {
 				topScore = tmp;
 				topMove = move;
 			}

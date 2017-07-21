@@ -5,8 +5,8 @@ import java.util.Map;
 import java.util.Set;
 
 public class Tree<E,V> implements ISmallTree<E,V> {
-	protected V value;
-	protected Map<E,Tree<E,V>> children;
+	private final V value;
+	private final Map<E,Tree<E,V>> children;
 
 	public Tree(V value) {
 		this.children = new HashMap<>();

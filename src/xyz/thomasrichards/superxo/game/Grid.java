@@ -9,8 +9,14 @@ public class Grid extends AbsGrid<Cell> {
 	private Board parent;
 
 	@SuppressWarnings("unchecked")
-	public Grid(Position p, Board parent) {
-		super(p, (AbsGrid<Cell>)(AbsGrid<?>) parent);
+	public Grid(Position pos, Board parent) {
+		super(pos, (AbsGrid<Cell>)(AbsGrid<?>) parent);
+		this.parent = parent;
+	}
+
+	@SuppressWarnings("unchecked")
+	private Grid(Position pos, Board parent, Player owner) {
+		super(pos, (AbsGrid<Cell>)(AbsGrid<?>) parent, owner);
 		this.parent = parent;
 	}
 
@@ -25,14 +31,12 @@ public class Grid extends AbsGrid<Cell> {
 		return children;
 	}
 
-	public Grid duplicate() {
-		List<Cell> newChildren = new ArrayList<>();
-
-		this.forEachChild(c -> newChildren.add(c.duplicate()));
-
-		return new Grid(this.pos, this.parent) {
+	public Grid duplicate(Board parent) {
+		return new Grid(this.pos, parent, this.owner) {
 			@Override
 			protected List<Cell> generateChildren() {
+				List<Cell> newChildren = new ArrayList<>();
+				Grid.this.forEachChild(c -> newChildren.add(c.duplicate(this)));
 				return newChildren;
 			}
 		};
