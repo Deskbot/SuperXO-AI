@@ -44,12 +44,17 @@ public class Agent1 extends Agent {
 	}
 
 	//Not sure how to do this better as (AbsGrid.getChild) returns (C extends Cell), so even AbsGrid children will always be 1.0 or 0.0
-	/*private double cellWorth(Cell c) {
-		return this.cellWorth(c, this.symbol) - this.cellWorth(c, this.symbol.opponent());
-	}*/
+	private Double cellWorth(Cell c) {
+		if (c instanceof AbsGrid<?>) {
+			AbsGrid<?> ag = (AbsGrid<?>) c;
+			return this.cellWorth(ag, this.symbol) - this.cellWorth(ag, this.symbol.opponent());
+		}
 
-	private double cellWorth(Board b) {
-		return this.cellWorth(b, this.symbol) - this.cellWorth(b, this.symbol.opponent());
+		return this.cellWorth(c, this.symbol) - this.cellWorth(c, this.symbol.opponent());
+	}
+
+	private Double cellWorth(Cell c, Player player) {
+		return c.getOwner() == player ? 1.0 : 0.0;
 	}
 
 	/*
@@ -69,40 +74,14 @@ public class Agent1 extends Agent {
 	 * for each cell find the highest chance of winning assuming you have that cell, then multiply it by that cell's own liklihood
 	 * average those chances as all cells are assumed to be equally likley to be chosen
 	 */
-	private double cellWorth(Board b, Player player) {
+	private double cellWorth(AbsGrid<?> g, Player player) {
 		double util = 0.0;
 
-		double maxRestOfTrioUtil, firstofTrioUtil, restOfTrioUtil;
 		Map<Position, PosDuo[]> winDuos = AbsGrid.winDuos;
-		PosDuo[] pdArr;
-		Set<Position> winDuosSet = winDuos.keySet();
-
-		for (Position p : winDuosSet) {
-			firstofTrioUtil = this.cellWorth(b.getChild(p), player);
-
-			if (firstofTrioUtil == 0.0) continue;
-
-			pdArr = winDuos.get(p);
-
-			//get the max util that can be caused by choosing p
-			maxRestOfTrioUtil = 0.0;
-			for (PosDuo pd : pdArr) {
-				restOfTrioUtil = this.cellWorth(b.getChild(pd.first), player) * this.cellWorth(b.getChild(pd.second), player);
-				maxRestOfTrioUtil = max(maxRestOfTrioUtil, restOfTrioUtil);
-			}
-
-			util += firstofTrioUtil * maxRestOfTrioUtil;
-		}
-
-		return util / winDuosSet.size(); //should be divide by 9.0, which is the number of positions in a grid
-	}
-
-	private double cellWorth(Grid g, Player player) {
-		double util = 0.0;
-
-		double maxRestOfTrioUtil, firstofTrioUtil, restOfTrioUtil;
-		Map<Position, PosDuo[]> winDuos = AbsGrid.winDuos;
-		PosDuo[] pdArr;
+		PosDuo[] pda;
+		double maxRestOfTrioUtil;
+		double firstofTrioUtil;
+		double restOfTrioUtil;
 		Set<Position> winDuosSet = winDuos.keySet();
 
 		for (Position p : winDuosSet) {
@@ -110,11 +89,11 @@ public class Agent1 extends Agent {
 
 			if (firstofTrioUtil == 0.0) continue;
 
-			pdArr = winDuos.get(p);
+			pda = winDuos.get(p);
 
 			//get the max util that can be caused by choosing p
 			maxRestOfTrioUtil = 0.0;
-			for (PosDuo pd : pdArr) {
+			for (PosDuo pd : pda) {
 				restOfTrioUtil = this.cellWorth(g.getChild(pd.first), player) * this.cellWorth(g.getChild(pd.second), player);
 				maxRestOfTrioUtil = max(maxRestOfTrioUtil, restOfTrioUtil);
 			}
@@ -123,13 +102,5 @@ public class Agent1 extends Agent {
 		}
 
 		return util / winDuosSet.size(); //should be divide by 9.0, which is the number of positions in a grid
-	}
-
-	private double cellWorth(Cell c, Player player) {
-		Player owner = c.getOwner();
-
-		if (owner == null) return 0.5;
-		if (owner == player) return 1.0;
-		return 0.0; //opponent of player
 	}
 }
