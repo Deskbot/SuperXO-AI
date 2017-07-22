@@ -67,7 +67,7 @@ public class Game {
 		return this.board.getOwner();
 	}
 
-	public AbsGrid<Grid> getBoard() {
+	public Board getBoard() {
 		return this.board;
 	}
 
