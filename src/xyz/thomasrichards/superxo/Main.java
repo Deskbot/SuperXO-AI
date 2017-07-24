@@ -2,6 +2,7 @@ package xyz.thomasrichards.superxo;
 
 import xyz.thomasrichards.superxo.ai.Agent;
 import xyz.thomasrichards.superxo.ai.Agent1;
+import xyz.thomasrichards.superxo.ai.Agent2;
 import xyz.thomasrichards.superxo.game.*;
 
 import java.io.BufferedReader;
@@ -16,6 +17,8 @@ class Main {
 
 		//resolving arguments
 
+		//checking for help option
+
 		String argL;
 		for (String arg : args) {
 			argL = arg.toLowerCase();
@@ -24,7 +27,7 @@ class Main {
 				System.out.println(
 					"Arguments:\n" +
 					"two arguments that are either of the following\n" +
-					"-a | --ai\n" +
+					"-a | --ai [agent int] [depth of search int]\n" +
 					"-p | --player\n"
 				);
 				System.exit(0);
@@ -32,37 +35,43 @@ class Main {
 		}
 
 		try {
-			int i = 0;
+			Agent thisAgent;
+			int aiNum;
 			int depth;
+			int i = -1; //first use of i is repeated and so needs to be ++i, -1 ensures the first usage is 0
+			Player thisPlayer;
 
-			switch (args[i]) {
-				case "-a":
-				case "--ai":
-					depth = Integer.parseInt(args[++i]);
-					controllerX = new AIController(new Agent1(Player.X, depth));
-					break;
-				case "-p":
-				case "--player":
-					controllerX = new HumanController(Player.X);
-					break;
-				default:
-					System.err.println("Argument " + args[i] + " was not understood.");
-					System.exit(1);
-			}
+			//looks for agent type twice
 
-			switch (args[++i]) {
-				case "-a":
-				case "--ai":
-					depth = Integer.parseInt(args[++i]);
-					controllerO = new AIController(new Agent1(Player.O, depth));
-					break;
-				case "-p":
-				case "--player":
-					controllerO = new HumanController(Player.O);
-					break;
-				default:
-					System.err.println("Argument " + args[i] + " was not understood.");
-					System.exit(1);
+			for (int playerNum = 1; playerNum <= 2; playerNum++) {
+				thisPlayer = playerNum == 1 ? Player.X : Player.O;
+
+				switch (args[++i]) {
+					case "-a":
+					case "--ai":
+						try {
+							aiNum = Integer.parseInt(args[++i]);
+							depth = Integer.parseInt(args[++i]);
+							thisAgent = makeNewAgent(aiNum, depth, thisPlayer);
+							if (thisAgent == null) throw new NumberFormatException();
+							if (playerNum == 1) controllerX = new AIController(thisAgent);
+							else                controllerO = new AIController(thisAgent);
+
+						} catch (NumberFormatException e) {
+							System.err.println("Error: Invalid AI number given");
+							System.exit(1);
+						}
+
+						break;
+					case "-p":
+					case "--player":
+						if (playerNum == 1) controllerX = new HumanController(thisPlayer);
+						else                controllerO = new HumanController(thisPlayer);
+						break;
+					default:
+						System.err.println("Argument " + args[i] + " was not understood.");
+						System.exit(1);
+				}
 			}
 
 		} catch (ArrayIndexOutOfBoundsException e) {
@@ -95,6 +104,15 @@ class Main {
 
 		System.out.println(g.getWinner());
 	}
+
+	private static Agent makeNewAgent(int aiNum, int depth, Player player) {
+		switch(aiNum) {
+			case 1: return new Agent1(player, depth);
+			case 2: return new Agent2(player, depth);
+		}
+
+		return null;
+	}
 }
 
 interface Controller {
@@ -102,9 +120,9 @@ interface Controller {
 }
 
 class HumanController implements Controller {
-	private Player player;
+	private final Player player;
 
-	private static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	private static final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
 	HumanController(Player p) {
 		this.player = p;
@@ -133,7 +151,7 @@ class HumanController implements Controller {
 }
 
 class AIController implements Controller {
-	private Agent agent;
+	private final Agent agent;
 
 	AIController(Agent a) {
 		this.agent = a;
