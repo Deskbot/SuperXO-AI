@@ -1,3 +1,9 @@
+/*
+ * This agent is the same as Agent1
+ * except that it judges the value of a game only in relation to the player whose turn it is
+ * the value of the game for the agent when it's the opponent's turn is negative the value for the opponent
+ */
+
 package xyz.thomasrichards.superxo.ai;
 
 import xyz.thomasrichards.superxo.game.*;
@@ -17,15 +23,17 @@ public class Agent2 extends Agent {
 	}
 
 	public Move chooseMove(Game game) {
+		if (game.getTurnPlayer() != this.symbol) return null;
+
 		GameTree gt = new GameTree(game);
 		double topScore = 0.0;
-		double tmp;
+		double moveScore;
 		Move topMove = null;
 
 		for (Move move : gt.getEdges()) {
-			tmp = this.minimax.getValue(gt.getChild(move), this.depth, true);
-			if (tmp > topScore || topMove == null) {
-				topScore = tmp;
+			moveScore = this.minimax.getValue(gt.getChild(move), this.depth, false); //min due to this being the opponent's move
+			if (moveScore > topScore || topMove == null) {
+				topScore = moveScore;
 				topMove = move;
 			}
 		}

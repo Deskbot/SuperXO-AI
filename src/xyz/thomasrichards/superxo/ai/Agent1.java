@@ -1,3 +1,8 @@
+/*
+ * This agent uses the weighting of each trio of ways of winning as a heuristic
+ * to determine how good the current game state is for a given player
+ */
+
 package xyz.thomasrichards.superxo.ai;
 
 import xyz.thomasrichards.superxo.game.*;
@@ -19,13 +24,15 @@ public class Agent1 extends Agent {
 	}
 
 	public Move chooseMove(Game game) {
+		if (game.getTurnPlayer() != this.symbol) return null;
+
 		GameTree gt = new GameTree(game);
 		double topScore = 0.0;
 		double tmp;
 		List<Move> topMoves = new ArrayList<>();
 		
 		for (Move move : gt.getEdges()) {
-			tmp = this.minimax.getValue(gt.getChild(move), this.depth, true);
+			tmp = this.minimax.getValue(gt.getChild(move), this.depth, false); //min due to this being the opponent's move
 			if (tmp > topScore || topMoves.isEmpty()) {
 				topScore = tmp;
 				topMoves = new ArrayList<>();
