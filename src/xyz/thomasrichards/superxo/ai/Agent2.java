@@ -1,11 +1,3 @@
-/*
- * idea:
- * also consider what options a move leaves for the opponent
- * whose turn it is depends on the number of levels deep the ai looks
- * need to consider difference between worth for current player and worth of options the next player is left
- * which way round this goes depends on whether the ai is the turnplayer
- * can times by 1 or -1 depending on this fact
- */
 package xyz.thomasrichards.superxo.ai;
 
 import xyz.thomasrichards.superxo.game.*;
@@ -46,19 +38,13 @@ public class Agent2 extends Agent {
 			Player winner = g.getWinner();
 
 			if (winner == null) {
-				double worthForTurnPlayer = this.cellWorth(g.getBoard(), g.getTurnPlayer());
-				double worthForNextTurnPlayer = this.gameWorthPreMove(g);
-				double whichPlayer = g.getTurnPlayer() == this.symbol ? 1.0 : -1.0;
-				return (worthForTurnPlayer - worthForNextTurnPlayer) * whichPlayer;
+				//if checking how good for the opp, that is negative how good for us
+				double goodOrBadMult = g.getTurnPlayer() == this.symbol ? 1.0 : -1.0;
+				return this.cellWorth(g.getBoard(), g.getTurnPlayer()) * goodOrBadMult;
 			}
 			else if (winner == this.symbol) return POSITIVE_INFINITY;
 			else return NEGATIVE_INFINITY; //opponent
 		};
-	}
-
-	private double gameWorthPreMove(Game game) {
-		//average the worth of all possible states after g.getTurnPlayer()'s move for g.getTurnPlayer()
-		game.getValidGrids();
 	}
 
 	private double cellWorth(Board b) {
