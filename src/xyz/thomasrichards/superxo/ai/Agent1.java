@@ -2,6 +2,8 @@ package xyz.thomasrichards.superxo.ai;
 
 import xyz.thomasrichards.superxo.game.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
@@ -20,17 +22,21 @@ public class Agent1 extends Agent {
 		GameTree gt = new GameTree(game);
 		double topScore = 0.0;
 		double tmp;
-		Move topMove = null;
+		List<Move> topMoves = new ArrayList<>();
 		
 		for (Move move : gt.getEdges()) {
 			tmp = this.minimax.getValue(gt.getChild(move), this.depth, true);
-			if (tmp > topScore || topMove == null) {
+			if (tmp > topScore || topMoves.isEmpty()) {
 				topScore = tmp;
-				topMove = move;
+				topMoves = new ArrayList<>();
+				topMoves.add(move);
+
+			} else if (tmp == topScore) {
+				topMoves.add(move);
 			}
 		}
 
-		return topMove;
+		return topMoves.get((int) (Math.random() * topMoves.size()));
 	}
 
 	protected Function<Game, Double> defineHeuristic() {

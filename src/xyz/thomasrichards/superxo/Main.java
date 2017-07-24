@@ -22,10 +22,10 @@ class Main {
 
 			if (argL.equals("-h") || argL.equals("--help")) {
 				System.out.println(
-						"Arguments:\n" +
-								"two arguments that are either of the following\n" +
-								"-a | --ai\n" +
-								"-p | --player\n"
+					"Arguments:\n" +
+					"two arguments that are either of the following\n" +
+					"-a | --ai\n" +
+					"-p | --player\n"
 				);
 				System.exit(0);
 			}
