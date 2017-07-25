@@ -74,6 +74,8 @@ For each move made whether by a human or AI: The symbol of that player, followed
 
 e.g. `X,TL,BR\n` or `O,BR,MM\n`
 
+When a player wins, `Winner: ` is displayed followed by the symbol of the winner.
+
 ### stderr
 
 All expected errors begin with `Error: ` followed by the reason for the message, then a new line charcter.

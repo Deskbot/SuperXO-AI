@@ -103,7 +103,7 @@ class Main {
 			System.out.println(whoJustMoved + "," + move.getGridPos() + "," + move.getCellPos());
 		}
 
-		System.out.println(g.getWinner());
+		System.out.println("Winner: " + g.getWinner());
 	}
 
 	private static Agent makeNewAgent(int aiNum, int depth, Player player) {
