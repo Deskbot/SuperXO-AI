@@ -27,8 +27,8 @@ class Main {
 				System.out.println(
 					"Arguments:\n" +
 					"two arguments that are either of the following\n" +
-					"-a | --ai [agent int] [depth of search int]\n" +
-					"-p | --player\n"
+					"[-a | --ai] [agent int] [depth of search int]\n" +
+					"[-p | --player]\n"
 				);
 				System.exit(0);
 			}
@@ -60,6 +60,7 @@ class Main {
 						} catch (NumberFormatException e) {
 							System.err.println("Error: Invalid AI number given");
 							System.exit(1);
+							return;
 						}
 
 						break;
@@ -71,6 +72,7 @@ class Main {
 					default:
 						System.err.println("Argument " + args[i] + " was not understood.");
 						System.exit(1);
+						return;
 				}
 			}
 
@@ -84,22 +86,21 @@ class Main {
 		Game g = new Game();
 		Controller currentActor;
 		Move move;
+		Player whoJustMoved;
 
 		while (!g.isWon()) {
-			if (g.getTurnPlayer() == Player.X) {
-				currentActor = controllerX;
-			} else {
-				currentActor = controllerO;
-			}
+			currentActor = g.getTurnPlayer() == Player.X ? controllerX : controllerO;
 
 			move = currentActor.chooseMove(g);
-			System.out.println(move.getGridPos() + "," + move.getCellPos());
+			whoJustMoved = g.getTurnPlayer();
 
 			try {
 				g.inputTurn(move);
 			} catch(InvalidMoveException e) {
 				System.err.println("Error: Invalid move");
 			}
+
+			System.out.println(whoJustMoved + "," + move.getGridPos() + "," + move.getCellPos());
 		}
 
 		System.out.println(g.getWinner());

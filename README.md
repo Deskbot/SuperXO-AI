@@ -41,8 +41,8 @@ java -cp out xyz.thomasrichards.superxo.Main [args]
 
 The arguments should be 2 instances of either of the following:
 
-* `-a | --ai` `[agent number] [difficulty int]`
-* `-p | --player`
+* `[-a | --ai] [agent number] [difficulty int]`
+* `[-p | --player]`
 
 The leftmost argument is player X who goes first. The rightmost argument is player O who goes second.
 
@@ -60,9 +60,9 @@ IO Specification
 
 Positions of cells and grids are represented by: `TL,TM,TR,ML,MM,MR,BL,BM,BR`, which should be self-explanatory.
 
-Moves are written as a pair of comma separated positions, where the left position is of a 3x3 grid and the right position is of the cell within that grid. 
+Moves are written as a pair of comma separated positions, where the left position is of a 3x3 grid and the right position is of the cell within that grid, followed by a new line character.
 
-e.g. `TL,BR` or `MM,MM`
+e.g. `TL,BR\n` or `MM,MM\n`
 
 ### stdin
 
@@ -70,11 +70,13 @@ Player chosen moves can be sent in. This move is executed for the current turn p
 
 ### stdout
 
-All moves made whether by a human or AI are sent out.
+For each move made whether by a human or AI: The symbol of that player, followed by a comma, followed by the move is sent out, followed by a new line character.
+
+e.g. `X,TL,BR\n` or `O,BR,MM\n`
 
 ### stderr
 
-All expected errors begin with `Error: ` followed by the reason for the message.
+All expected errors begin with `Error: ` followed by the reason for the message, then a new line charcter.
 
 Note
 ----
