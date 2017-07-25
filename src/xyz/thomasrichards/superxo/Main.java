@@ -130,12 +130,12 @@ class HumanController implements Controller {
 	}
 
 	public Move chooseMove(Game g) {
-		Position gridPos = null;
-		Position cellPos = null;
+		Position gridPos, cellPos;
+		String[] input;
 
 		while (true) {
 			try {
-				String[] input = br.readLine().split(",");
+				input = br.readLine().split(",");
 				gridPos = Position.valueOf(input[0]);
 				cellPos = Position.valueOf(input[1]);
 				return new Move(this.player, gridPos, cellPos);
@@ -145,7 +145,7 @@ class HumanController implements Controller {
 				System.exit(1);
 
 			} catch (IllegalArgumentException e) {
-				System.err.println("Error: invalid position either " + gridPos + " or " + cellPos);
+				System.err.println("Error: invalid position given");
 			}
 		}
 	}
