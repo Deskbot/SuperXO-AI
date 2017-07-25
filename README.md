@@ -13,18 +13,13 @@ Players take turns to make a move in a small games. The position in the small ga
 
 If there is no valid place to move in the small game you're assigned, you can make your move anywhere.
 
-Installation
-------------
+Install \& Build
+----------------
 
 ```
 git clone https://github.com/Deskbot/SuperXO-AI
-```
-
-Compilation
------------
-
-```
 cd SuperXO-AI
+mkdir out
 ./compile.sh
 ```
 
