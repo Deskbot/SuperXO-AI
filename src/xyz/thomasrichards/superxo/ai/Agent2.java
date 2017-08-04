@@ -1,14 +1,13 @@
 /*
- * This agent uses the weighting of each trio of ways of winning as a heuristic
- * to determine how good the current game state is for a given player
+ * This agent is the same as Agent1
+ * except that it judges the value of a game only in relation to the player whose turn it is
+ * the value of the game for the agent when it's the opponent's turn is negative the value for the opponent
  */
 
 package xyz.thomasrichards.superxo.ai;
 
 import xyz.thomasrichards.superxo.game.*;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
@@ -17,9 +16,9 @@ import static java.lang.Double.NEGATIVE_INFINITY;
 import static java.lang.Double.POSITIVE_INFINITY;
 import static java.lang.Double.max;
 
-public class Agent1 extends Agent {
+public class Agent2 extends Agent {
 
-	public Agent1(Player symbol, int depth) {
+	public Agent2(Player symbol, int depth) {
 		super(depth, symbol);
 	}
 
@@ -28,29 +27,29 @@ public class Agent1 extends Agent {
 
 		GameTree gt = new GameTree(game);
 		double topScore = 0.0;
-		double tmp;
-		List<Move> topMoves = new ArrayList<>();
-		
-		for (Move move : gt.getEdges()) {
-			tmp = this.minimax.getValue(gt.getChild(move), this.depth, false); //min due to this being the opponent's move
-			if (tmp > topScore || topMoves.isEmpty()) {
-				topScore = tmp;
-				topMoves = new ArrayList<>();
-				topMoves.add(move);
+		double moveScore;
+		Move topMove = null;
 
-			} else if (tmp == topScore) {
-				topMoves.add(move);
+		for (Move move : gt.getEdges()) {
+			moveScore = this.minimax.getValue(gt.getChild(move), this.depth, false); //min due to this being the opponent's move
+			if (moveScore > topScore || topMove == null) {
+				topScore = moveScore;
+				topMove = move;
 			}
 		}
 
-		return topMoves.get((int) (Math.random() * topMoves.size()));
+		return topMove;
 	}
 
 	protected Function<Game, Double> defineHeuristic() {
 		return g -> {
 			Player winner = g.getWinner();
 
-			if (winner == null) return this.cellWorth(g.getBoard());
+			if (winner == null) {
+				//if checking how good for the opp, that is negative how good for us
+				double goodOrBadMult = g.getTurnPlayer() == this.symbol ? 1.0 : -1.0;
+				return this.cellWorth(g.getBoard(), g.getTurnPlayer()) * goodOrBadMult;
+			}
 			else if (winner == this.symbol) return POSITIVE_INFINITY;
 			else return NEGATIVE_INFINITY; //opponent
 		};
