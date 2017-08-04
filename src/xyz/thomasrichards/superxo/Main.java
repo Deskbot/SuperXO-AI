@@ -96,11 +96,10 @@ class Main {
 
 			try {
 				g.inputTurn(move);
+				System.out.println(whoJustMoved + "," + move.getGridPos() + "," + move.getCellPos());
 			} catch(InvalidMoveException e) {
 				System.err.println("Error: Invalid move");
 			}
-
-			System.out.println(whoJustMoved + "," + move.getGridPos() + "," + move.getCellPos());
 		}
 
 		System.out.println("Winner: " + g.getWinner());
