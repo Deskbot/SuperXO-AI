@@ -43,8 +43,8 @@ public class Game {
 	}
 
 	public void inputTurn(Position gridPos, Position cellPos) {
-		if (this.board.isWon())
-			throw new GameAlreadyWonException(this.board.getOwner() + " has already won.");
+		if (this.isOver())
+			throw new GameAlreadyOverException(this.board.getOwner() + " has already won.");
 
 		Grid g = this.board.getChild(gridPos);
 		Cell c = g.getChild(cellPos);
@@ -57,10 +57,16 @@ public class Game {
 		} else {
 			throw new InvalidMoveException("The move {grid: " + gridPos + ", cell: " + cellPos + "} is invalid in game: \n" + this.board);
 		}
+	public boolean isOver() {
+		return this.isWon() || this.isDraw();
 	}
 
 	public boolean isWon() {
 		return this.board.isWon();
+	}
+
+	public boolean isDraw() {
+		return this.getValidGrids().isEmpty();
 	}
 
 	public Player getWinner() {

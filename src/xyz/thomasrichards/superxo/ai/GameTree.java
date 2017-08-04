@@ -39,6 +39,6 @@ class GameTree implements ISmallTree<Move, Game> {
 	}
 
 	public boolean isLeaf() {
-		return this.value == null;
+		return this.value.isOver();
 	}
 }

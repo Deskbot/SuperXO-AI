@@ -50,9 +50,10 @@ public class Agent1 extends Agent {
 		return g -> {
 			Player winner = g.getWinner();
 
+			if (g.isDraw()) return 0.0;
 			if (winner == null) return this.cellWorth(g.getBoard());
-			else if (winner == this.symbol) return POSITIVE_INFINITY;
-			else return NEGATIVE_INFINITY; //opponent
+			if (winner == this.symbol) return POSITIVE_INFINITY;
+			return NEGATIVE_INFINITY; //opponent
 		};
 	}
 
