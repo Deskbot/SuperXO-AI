@@ -5,7 +5,7 @@ This repository contains code for running games of Super Noughts and Crosses in 
 How to Play
 -----------
 
-The best way to learn is to play the game at [http://superxo.16mb.com](http://superxo.16mb.com).
+The best way to learn is to play the game at [thomasrichards.xyz/SuperXO](http://thomasrichards.xyz/SuperXO).
 
 You are trying to win the big game of noughts and crosses. You can only fill in a cell by winning the game within it.
 
