@@ -74,7 +74,7 @@ class SampleGame {
 			System.out.println(g.getWinner());
 		} catch (InvalidMoveException e) {
 			System.err.println(e.getMessage());
-		} catch (GameAlreadyWonException e) {
+		} catch (GameAlreadyOverException e) {
 			System.err.println(e.getMessage());
 		}
 	}

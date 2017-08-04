@@ -88,7 +88,7 @@ class Main {
 		Move move;
 		Player whoJustMoved;
 
-		while (!g.isWon()) {
+		while (!(g.isWon() || g.isDraw())) {
 			currentActor = g.getTurnPlayer() == Player.X ? controllerX : controllerO;
 
 			move = currentActor.chooseMove(g);
@@ -102,7 +102,7 @@ class Main {
 			}
 		}
 
-		System.out.println("Winner: " + g.getWinner());
+		System.out.println(g.isWon() ? "Winner: " + g.getWinner() : "Draw");
 	}
 
 	private static Agent makeNewAgent(int aiNum, int depth, Player player) {
