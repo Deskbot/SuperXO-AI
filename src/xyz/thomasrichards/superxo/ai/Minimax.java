@@ -4,6 +4,8 @@ import xyz.thomasrichards.superxo.ISmallTree;
 
 import java.util.function.Function;
 
+import static java.lang.Double.POSITIVE_INFINITY;
+import static java.lang.Double.NEGATIVE_INFINITY;
 import static java.lang.Double.max;
 import static java.lang.Double.min;
 
@@ -21,21 +23,23 @@ public class Minimax<M,V> {
 		ISmallTree<M,V> child;
 
 		if (maximise) {
-			bestValue = Double.NEGATIVE_INFINITY;
+			bestValue = NEGATIVE_INFINITY;
 
 			for (M move : node.getEdges()) {
 				child = node.getChild(move);
 				v = this.getValue(child, depth - 1, false);
+				if (v == POSITIVE_INFINITY) return v;
 				bestValue = max(bestValue, v);
 			}
 			return bestValue;
 
 		} else {
-			bestValue = Double.POSITIVE_INFINITY;
+			bestValue = POSITIVE_INFINITY;
 
 			for (M move : node.getEdges()) {
 				child = node.getChild(move);
 				v = this.getValue(child, depth - 1, true);
+				if (v == NEGATIVE_INFINITY) return v;
 				bestValue = min(bestValue, v);
 			}
 			return bestValue;
