@@ -9,7 +9,7 @@ The best way to learn is to play the game at [thomasrichards.xyz/SuperXO](http:/
 
 You are trying to win the big game of noughts and crosses. You can only fill in a cell by winning the game within it.
 
-Players take turns to make a move in a small games. The position in the small game you make your move is the position of the small game the next player must make a move in.
+Players take turns to make a move in a small game. The position of the cell you chose in a small game is the position of the small game in the big game where the next player must choose a move.
 
 If there is no valid place to move in the small game you're assigned, you can make your move anywhere.
 
