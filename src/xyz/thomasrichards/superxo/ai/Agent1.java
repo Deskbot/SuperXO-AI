@@ -78,7 +78,7 @@ public class Agent1 extends Agent {
 	 * for each cell find the highest chance of winning assuming you have that cell, then multiply it by that cell's own liklihood
 	 * average those chances as all cells are assumed to be equally likley to be chosen
 	 */
-	private double cellWorth(Board b, Player player) {
+	private <C extends Cell> double cellWorth(AbsGrid<C> b, Player player) {
 		double util = 0.0;
 
 		double maxRestOfTrioUtil, firstofTrioUtil, restOfTrioUtil;
@@ -87,7 +87,7 @@ public class Agent1 extends Agent {
 		Set<Position> winDuosSet = winDuos.keySet();
 
 		for (Position p : winDuosSet) {
-			firstofTrioUtil = this.cellWorth(b.getChild(p), player);
+			firstofTrioUtil = this.<C>cellWorth(b.getChild(p), player);
 
 			if (firstofTrioUtil == 0.0) continue;
 
@@ -96,35 +96,7 @@ public class Agent1 extends Agent {
 			//get the max util that can be caused by choosing p
 			maxRestOfTrioUtil = 0.0;
 			for (PosDuo pd : pdArr) {
-				restOfTrioUtil = this.cellWorth(b.getChild(pd.first), player) * this.cellWorth(b.getChild(pd.second), player);
-				maxRestOfTrioUtil = max(maxRestOfTrioUtil, restOfTrioUtil);
-			}
-
-			util += firstofTrioUtil * maxRestOfTrioUtil;
-		}
-
-		return util / winDuosSet.size(); //should be divide by 9.0, which is the number of positions in a grid
-	}
-
-	private double cellWorth(Grid g, Player player) {
-		double util = 0.0;
-
-		double maxRestOfTrioUtil, firstofTrioUtil, restOfTrioUtil;
-		Map<Position, PosDuo[]> winDuos = AbsGrid.winDuos;
-		PosDuo[] pdArr;
-		Set<Position> winDuosSet = winDuos.keySet();
-
-		for (Position p : winDuosSet) {
-			firstofTrioUtil = this.cellWorth(g.getChild(p), player);
-
-			if (firstofTrioUtil == 0.0) continue;
-
-			pdArr = winDuos.get(p);
-
-			//get the max util that can be caused by choosing p
-			maxRestOfTrioUtil = 0.0;
-			for (PosDuo pd : pdArr) {
-				restOfTrioUtil = this.cellWorth(g.getChild(pd.first), player) * this.cellWorth(g.getChild(pd.second), player);
+				restOfTrioUtil = this.<C>cellWorth(b.getChild(pd.first), player) * this.<C>cellWorth(b.getChild(pd.second), player);
 				maxRestOfTrioUtil = max(maxRestOfTrioUtil, restOfTrioUtil);
 			}
 
