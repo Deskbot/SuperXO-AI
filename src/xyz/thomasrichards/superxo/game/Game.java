@@ -59,7 +59,7 @@ public class Game {
 			this.toggleTurnPlayer();
 
 		} else {
-			throw new InvalidMoveException("The move {grid: " + gridPos + ", cell: " + cellPos + "} is invalid in game: \n" + this.board);
+			throw new InvalidMoveException("Invalid move {grid: " + gridPos + ", cell: " + cellPos + "} in game: \n" + this.board);
 		}
 
 		this.validGridsThisTurn = null;

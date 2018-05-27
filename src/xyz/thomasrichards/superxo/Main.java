@@ -98,7 +98,7 @@ class Main {
 				g.inputTurn(move);
 				System.out.println(whoJustMoved + "," + move.getGridPos() + "," + move.getCellPos());
 			} catch(InvalidMoveException e) {
-				System.err.println("Error: Invalid move");
+				System.err.println("Error: " + e.getMessage());
 			}
 		}
 
@@ -144,7 +144,7 @@ class HumanController implements Controller {
 				System.exit(1);
 
 			} catch (IllegalArgumentException e) {
-				System.err.println("Error: invalid position given");
+				System.err.println("Error: Invalid move syntax");
 			}
 		}
 	}
