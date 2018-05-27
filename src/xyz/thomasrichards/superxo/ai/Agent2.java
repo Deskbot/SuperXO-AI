@@ -43,9 +43,9 @@ public class Agent2 extends Agent {
 
 	protected Function<Game, Double> defineHeuristic() {
 		return g -> {
-			Player winner = g.getWinner();
-
 			if (g.isDraw()) return 0.0;
+
+			Player winner = g.getWinner();
 			if (winner == null) {
 				//if checking how good for the opp, that is negative how good for us
 				double goodOrBadMult = g.getTurnPlayer() == this.symbol ? 1.0 : -1.0;

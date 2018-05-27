@@ -48,9 +48,9 @@ public class Agent1 extends Agent {
 
 	protected Function<Game, Double> defineHeuristic() {
 		return g -> {
-			Player winner = g.getWinner();
-
 			if (g.isDraw()) return 0.0;
+
+			Player winner = g.getWinner();
 			if (winner == null) return this.cellWorth(g.getBoard());
 			if (winner == this.symbol) return POSITIVE_INFINITY;
 			return NEGATIVE_INFINITY; //opponent
