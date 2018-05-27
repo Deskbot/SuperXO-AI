@@ -74,8 +74,3 @@ When a player wins, `Winner: ` is displayed followed by the symbol of the winner
 ### stderr
 
 All expected errors begin with `Error: ` followed by the reason for the message, then a new line charcter.
-
-Note
-----
-
-At level 4 difficulty, during a game, Java ran out of heap space on my machine because each level is an extra level of depth in the search tree and for moves with a lot of choices this causes problems.
