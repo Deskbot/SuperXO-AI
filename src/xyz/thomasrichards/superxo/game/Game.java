@@ -8,17 +8,26 @@ public class Game {
 	private Position lastCellPosUsed;
 	private Player turnPlayer;
 	private Set<Grid> validGridsThisTurn;
+	private Set<Position> validGridPosThisTurn;
 
 	public Game() {
 		this.board = new Board();
 		this.turnPlayer = Player.X;
 	}
 
-	private Game(Board board, Position lastCellPosUsed, Player startPlayer, Set<Grid> validGridsThisTurn) {
+	private Game(Board board, Position lastCellPosUsed, Player startPlayer, Set<Position> validGridPosThisTurn) {
 		this.board = board;
 		this.lastCellPosUsed = lastCellPosUsed;
 		this.turnPlayer = startPlayer;
-		this.validGridsThisTurn = validGridsThisTurn;
+		this.validGridPosThisTurn = validGridPosThisTurn;
+
+		if (validGridPosThisTurn != null) {
+			//store valid grids without recalculating them
+			this.validGridsThisTurn = new HashSet<>();
+			for (Position p : validGridPosThisTurn) {
+				this.validGridsThisTurn.add(this.board.getChild(p));
+			}
+		}
 	}
 
 	public Set<Grid> getValidGrids() {
@@ -42,6 +51,19 @@ public class Game {
 		}
 	}
 
+	private Set<Position> getValidGridsPos() {
+		if (this.validGridPosThisTurn != null) return this.validGridPosThisTurn;
+
+		Set<Grid> validGrids = this.getValidGrids();
+		Set<Position> output = new HashSet<>();
+
+		for (Grid g : validGrids) {
+			output.add(g.getPos());
+		}
+
+		return this.validGridPosThisTurn = output;
+	}
+
 	public void inputTurn(Move m) {
 		inputTurn(m.getGridPos(), m.getCellPos());
 	}
@@ -53,7 +75,8 @@ public class Game {
 		Grid g = this.board.getChild(gridPos);
 		Cell c = g.getChild(cellPos);
 
-		if (g.hasSpace() && c.getOwner() == null) { //move is valid
+		//valid move iff empty cell in valid grid
+		if (this.getValidGridsPos().contains(g.getPos()) && c.getOwner() == null) {
 			c.setOwner(this.turnPlayer);
 			this.lastCellPosUsed = cellPos;
 			this.toggleTurnPlayer();
@@ -62,7 +85,7 @@ public class Game {
 			throw new InvalidMoveException("Invalid move {grid: " + gridPos + ", cell: " + cellPos + "} in game: \n" + this.board);
 		}
 
-		this.validGridsThisTurn = null;
+		this.resetValidGridCache();
 	}
 
 	public boolean isOver() {
@@ -90,10 +113,15 @@ public class Game {
 	}
 
 	public Game duplicate() {
-		return new Game(this.board.duplicate(), this.lastCellPosUsed, this.turnPlayer, this.validGridsThisTurn);
+		return new Game(this.board.duplicate(), this.lastCellPosUsed, this.turnPlayer, this.validGridPosThisTurn);
 	}
 
 	//private
+
+	private void resetValidGridCache() {
+		this.validGridsThisTurn = null;
+		this.validGridPosThisTurn = null;
+	}
 
 	private void toggleTurnPlayer() {
 		if (this.turnPlayer == Player.X) this.turnPlayer = Player.O;
