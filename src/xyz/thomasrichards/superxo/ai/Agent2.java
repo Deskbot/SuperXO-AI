@@ -77,7 +77,7 @@ public class Agent2 extends Agent {
 	 * for each cell find the highest chance of winning assuming you have that cell, then multiply it by that cell's own liklihood
 	 * average those chances as all cells are assumed to be equally likley to be chosen
 	 */
-	private double <C extends Cell> cellWorth(AbsGric<C> g, Player player) {
+	private <C extends Cell> double cellWorth(AbsGrid<C> g, Player player) {
 		double util = 0.0;
 
 		double maxRestOfTrioUtil, firstofTrioUtil, restOfTrioUtil;
