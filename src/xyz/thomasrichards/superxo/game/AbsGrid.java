@@ -173,6 +173,9 @@ public abstract class AbsGrid<C extends Cell> extends Cell {
 
 	//protected
 
-	//this requires the instantiation of a generic object which isn't doable, so a subclass must extend this class with type parameters specified and generate the children in this method in the subclass
+	/* this requires the instantiation of a generic object which isn't doable,
+	 * so a subclass must extend this class with type parameters specified
+	 * and generate the children in this method in the subclass
+	 */
 	protected abstract List<C> generateChildren();
 }
