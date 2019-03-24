@@ -9,7 +9,7 @@ public class Grid extends AbsGrid<Cell> {
 	private final Board parent;
 
 	@SuppressWarnings("unchecked")
-	public Grid(Position pos, Board parent) {
+	Grid(Position pos, Board parent) {
 		super(pos, (AbsGrid<Cell>)(AbsGrid<?>) parent);
 		this.parent = parent;
 	}
