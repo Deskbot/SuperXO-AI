@@ -41,19 +41,19 @@ public class Agent2 extends Agent {
 		return topMove;
 	}
 
-	protected Function<Game, Double> defineHeuristic() {
-		return g -> {
-			if (g.isDraw()) return 0.0;
+	protected Double heuristic(Game g) {
+		if (g.isDraw())
+			return 0.0;
 
-			Player winner = g.getWinner();
-			if (winner == null) {
-				//if checking how good for the opp, that is negative how good for us
-				double goodOrBadMult = g.getTurnPlayer() == this.symbol ? 1.0 : -1.0;
-				return this.cellWorth(g.getBoard(), g.getTurnPlayer()) * goodOrBadMult;
-			}
-			else if (winner == this.symbol) return POSITIVE_INFINITY;
-			else return NEGATIVE_INFINITY; //opponent
-		};
+		Player winner = g.getWinner();
+		if (winner == null) {
+			// if checking how good for the opp, that is negative how good for us
+			double goodOrBadMult = g.getTurnPlayer() == this.symbol ? 1.0 : -1.0;
+			return this.cellWorth(g.getBoard(), g.getTurnPlayer()) * goodOrBadMult;
+		} else if (winner == this.symbol)
+			return POSITIVE_INFINITY;
+		else
+			return NEGATIVE_INFINITY; // opponent
 	}
 
 	private double cellWorth(Board b) {

@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Function;
 
 import static java.lang.Double.NEGATIVE_INFINITY;
 import static java.lang.Double.POSITIVE_INFINITY;
@@ -30,7 +29,7 @@ public class Agent1 extends Agent {
 		double topScore = 0.0;
 		double tmp;
 		List<Move> topMoves = new ArrayList<>();
-		
+
 		for (Move move : gt.getEdges()) {
 			tmp = this.minimax.getValue(gt.getChild(move), this.depth, false); //min due to this being the opponent's move
 			if (tmp > topScore || topMoves.isEmpty()) {
@@ -46,15 +45,17 @@ public class Agent1 extends Agent {
 		return topMoves.get((int) (Math.random() * topMoves.size()));
 	}
 
-	protected Function<Game, Double> defineHeuristic() {
-		return g -> {
-			if (g.isDraw()) return 0.0;
+	protected Double heuristic(Game g) {
+		if (g.isDraw())
+			return 0.0;
 
-			Player winner = g.getWinner();
-			if (winner == null) return this.cellWorth(g.getBoard());
-			if (winner == this.symbol) return POSITIVE_INFINITY;
-			return NEGATIVE_INFINITY; //opponent
-		};
+		Player winner = g.getWinner();
+		if (winner == null)
+			return this.cellWorth(g.getBoard());
+		if (winner == this.symbol)
+			return POSITIVE_INFINITY;
+
+		return NEGATIVE_INFINITY; // opponent
 	}
 
 	private double cellWorth(Board b) {
