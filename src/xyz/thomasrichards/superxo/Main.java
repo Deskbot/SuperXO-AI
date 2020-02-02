@@ -9,11 +9,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-class Main {
+public class Main {
 
 	public static void main(String[] args) {
 		Controller controllerX = null;
 		Controller controllerO = null;
+		int rounds = 1;
 
 		//resolving arguments
 
@@ -28,7 +29,8 @@ class Main {
 					"Arguments:\n" +
 					"two arguments that are either of the following\n" +
 					"[-a | --ai] [agent int] [depth of search int]\n" +
-					"[-p | --player]\n"
+					"[-p | --player]\n" +
+					"[-r | --rounds] [quantity int]"
 				);
 				System.exit(0);
 			}
@@ -41,9 +43,11 @@ class Main {
 			int i = -1; //first use of i is repeated and so needs to be ++i, -1 ensures the first usage is 0
 			Player thisPlayer;
 
-			//looks for agent type twice
+			// looks for agent type twice
 
-			for (int playerNum = 1; playerNum <= 2; playerNum++) {
+			int playerNum = 1;
+
+			while (i < args.length - 1) {
 				thisPlayer = playerNum == 1 ? Player.X : Player.O;
 
 				switch (args[++i]) {
@@ -62,12 +66,19 @@ class Main {
 							System.exit(1);
 							return;
 						}
-
+						playerNum++;
 						break;
+
 					case "-p":
 					case "--player":
 						if (playerNum == 1) controllerX = new HumanController(thisPlayer);
 						else                controllerO = new HumanController(thisPlayer);
+						playerNum++;
+						break;
+
+					case "-r":
+					case "--rounds":
+						rounds = Integer.parseInt(args[++i]);
 						break;
 					default:
 						System.err.println("Argument " + args[i] + " was not understood.");
@@ -81,8 +92,22 @@ class Main {
 			System.exit(1);
 		}
 
-		//game start up
+		// play all rounds
+		for (int currentRound = 0; currentRound < rounds; currentRound++) {
+			round(controllerX, controllerO);
+		}
+	}
 
+	private static Agent makeNewAgent(int aiNum, int depth, Player player) {
+		switch(aiNum) {
+			case 1: return new Agent1(player, depth);
+			case 2: return new Agent2(player, depth);
+		}
+
+		return null;
+	}
+
+	private static void round(Controller controllerX, Controller controllerO) {
 		Game g = new Game();
 		Controller currentActor;
 		Move move;
@@ -103,15 +128,6 @@ class Main {
 		}
 
 		System.out.println(g.isWon() ? "Winner: " + g.getWinner() : "Draw");
-	}
-
-	private static Agent makeNewAgent(int aiNum, int depth, Player player) {
-		switch(aiNum) {
-			case 1: return new Agent1(player, depth);
-			case 2: return new Agent2(player, depth);
-		}
-
-		return null;
 	}
 }
 

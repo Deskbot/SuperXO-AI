@@ -43,6 +43,10 @@ The leftmost argument is player X who goes first. The rightmost argument is play
 
 i.e. it is possible to play human against human or ai against ai.
 
+You can optionally include the following:
+
+* `[-r | --rounds] [quantity int]` Specify the number of rounds to be played. Default 1.
+
 Update
 ------
 
