@@ -10,11 +10,8 @@ import xyz.thomasrichards.superxo.game.*;
 
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Function;
 
-import static java.lang.Double.NEGATIVE_INFINITY;
-import static java.lang.Double.POSITIVE_INFINITY;
-import static java.lang.Double.max;
+import static java.lang.Double.*;
 
 public class Agent2 extends Agent {
 
@@ -56,10 +53,6 @@ public class Agent2 extends Agent {
 			return NEGATIVE_INFINITY; // opponent
 	}
 
-	private double cellWorth(Board b) {
-		return this.cellWorth(b, this.symbol) - this.cellWorth(b, this.symbol.opponent());
-	}
-
 	/*
 	 * tactic:
 	 * we have a fraction (between 0 and 1 inclusive) for each cell in a grid
@@ -86,7 +79,7 @@ public class Agent2 extends Agent {
 		Set<Position> winDuosSet = winDuos.keySet();
 
 		for (Position p : winDuosSet) {
-			firstofTrioUtil = this.<C>cellWorth(g.getChild(p), player);
+			firstofTrioUtil = this.cellWorth(g.getChild(p), player);
 
 			if (firstofTrioUtil == 0.0) continue;
 
@@ -95,7 +88,7 @@ public class Agent2 extends Agent {
 			//get the max util that can be caused by choosing p
 			maxRestOfTrioUtil = 0.0;
 			for (PosDuo pd : pdArr) {
-				restOfTrioUtil = this.<C>cellWorth(g.getChild(pd.first), player) * this.cellWorth(g.getChild(pd.second), player);
+				restOfTrioUtil = this.cellWorth(g.getChild(pd.first), player) * this.cellWorth(g.getChild(pd.second), player);
 				maxRestOfTrioUtil = max(maxRestOfTrioUtil, restOfTrioUtil);
 			}
 

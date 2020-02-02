@@ -12,9 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static java.lang.Double.NEGATIVE_INFINITY;
-import static java.lang.Double.POSITIVE_INFINITY;
-import static java.lang.Double.max;
+import static java.lang.Double.*;
 
 public class Agent1 extends Agent {
 
@@ -88,7 +86,7 @@ public class Agent1 extends Agent {
 		Set<Position> winDuosSet = winDuos.keySet();
 
 		for (Position p : winDuosSet) {
-			firstofTrioUtil = this.<C>cellWorth(b.getChild(p), player);
+			firstofTrioUtil = this.cellWorth(b.getChild(p), player);
 
 			if (firstofTrioUtil == 0.0) continue;
 
@@ -97,7 +95,7 @@ public class Agent1 extends Agent {
 			//get the max util that can be caused by choosing p
 			maxRestOfTrioUtil = 0.0;
 			for (PosDuo pd : pdArr) {
-				restOfTrioUtil = this.<C>cellWorth(b.getChild(pd.first), player) * this.<C>cellWorth(b.getChild(pd.second), player);
+				restOfTrioUtil = this.cellWorth(b.getChild(pd.first), player) * this.cellWorth(b.getChild(pd.second), player);
 				maxRestOfTrioUtil = max(maxRestOfTrioUtil, restOfTrioUtil);
 			}
 
