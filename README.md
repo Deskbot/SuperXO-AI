@@ -75,6 +75,14 @@ e.g. `X,TL,BR\n` or `O,BR,MM\n`
 
 When a player wins, `Winner: ` is displayed followed by the symbol of the winner.
 
+If more than one round was played, statistics are outputted in the following format:
+
+```
+X won 12
+O won 6
+Draws 2
+```
+
 ### stderr
 
 All expected errors begin with `Error: ` followed by the reason for the message, then a new line charcter.

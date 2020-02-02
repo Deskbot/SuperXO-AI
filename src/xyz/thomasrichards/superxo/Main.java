@@ -8,6 +8,8 @@ import xyz.thomasrichards.superxo.game.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Main {
 
@@ -93,8 +95,19 @@ public class Main {
 		}
 
 		// play all rounds
+		Map<Player, Integer> wins = new HashMap<>();
+		wins.put(Player.X, 0);
+		wins.put(Player.O, 0);
+		wins.put(null, 0);
 		for (int currentRound = 0; currentRound < rounds; currentRound++) {
-			round(controllerX, controllerO);
+			Player winner = round(controllerX, controllerO);
+			wins.put(winner, wins.get(winner) + 1);
+		}
+
+		if (rounds > 1) {
+			System.out.println(Player.X + " won " + wins.get(Player.X));
+			System.out.println(Player.O + " won " + wins.get(Player.O));
+			System.out.println("Draws " + wins.get(null));
 		}
 	}
 
@@ -107,7 +120,7 @@ public class Main {
 		return null;
 	}
 
-	private static void round(Controller controllerX, Controller controllerO) {
+	private static Player round(Controller controllerX, Controller controllerO) {
 		Game g = new Game();
 		Controller currentActor;
 		Move move;
@@ -128,6 +141,8 @@ public class Main {
 		}
 
 		System.out.println(g.isWon() ? "Winner: " + g.getWinner() : "Draw");
+
+		return g.getWinner();
 	}
 }
 
