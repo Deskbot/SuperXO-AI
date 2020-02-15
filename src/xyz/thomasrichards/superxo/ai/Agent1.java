@@ -1,6 +1,22 @@
 /*
  * This agent uses the weighting of each trio of ways of winning as a heuristic
  * to determine how good the current game state is for a given player
+ *
+ * tactic:
+ * we have a fraction (between 0 and 1 inclusive) for each cell in a grid
+ * the number represents its worth i.e. how close to owning the player is.
+ * The usefulness of each cell depends on how easily filling it in will cause the grid to be won
+ * multiplying every cell worth in a winning trio shows the liklihood of it happening
+ * we can't just take an average of all products because:
+ * XX_
+ * __X
+ * __X
+ * counts 4 that are 1 away, even though only 2 cells cause the grid to be 1 away
+ * we need to assume because it's a cutoff heuristic that we are choosing a random cell
+ * so we need to know the liklihood that choosing a cell will cause a win, going in TR above is only worth 1 win
+ * solution:
+ * for each cell find the highest chance of winning involving that that cell, then multiply it by that cell's own liklihood
+ * average those chances as all cells are assumed to be equally likley to be chosen
  */
 
 package xyz.thomasrichards.superxo.ai;
@@ -49,34 +65,17 @@ public class Agent1 extends Agent {
 
 		Player winner = g.getWinner();
 		if (winner == null)
-			return this.cellWorth(g.getBoard());
+			return this.boardWorth(g.getBoard());
 		if (winner == this.symbol)
 			return POSITIVE_INFINITY;
 
 		return NEGATIVE_INFINITY; // opponent
 	}
 
-	private double cellWorth(Board b) {
+	private double boardWorth(Board b) {
 		return this.cellWorth(b, this.symbol) - this.cellWorth(b, this.symbol.opponent());
 	}
 
-	/*
-	 * tactic:
-	 * we have a fraction (between 0 and 1 inclusive) for each cell in a grid
-	 * the number represents its worth i.e. how close to owning the player is.
-	 * The usefulness of each cell depends on how easily filling it in will cause the grid to be won
-	 * multiplying every cell worth in a winning trio shows the liklihood of it happening
-	 * we can't just take an average of all products because:
-	 * XX_
-	 * __X
-	 * __X
-	 * counts 4 that are 1 away, even though only 2 cells cause the grid to be 1 away
-	 * we need to assume because it's a cutoff heuristic that we are choosing a random cell
-	 * so we need to know the liklihood that choosing a cell will cause a win, going in TR above is only worth 1 win
-	 * solution:
-	 * for each cell find the highest chance of winning assuming you have that cell, then multiply it by that cell's own liklihood
-	 * average those chances as all cells are assumed to be equally likley to be chosen
-	 */
 	private <C extends Cell> double cellWorth(C c, Player player) {
 		if (!(c instanceof AbsGrid)) {
 			Player owner = c.getOwner();
@@ -114,5 +113,4 @@ public class Agent1 extends Agent {
 
 		return util / winDuosSet.size(); //should be divide by 9.0, which is the number of positions in a grid
 	}
-
 }
