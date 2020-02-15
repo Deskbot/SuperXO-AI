@@ -61,27 +61,29 @@ public class Agent5 extends Agent {
 		return this.cellWorth(b, this.symbol) - this.cellWorth(b, this.symbol.opponent());
 	}
 
-	private <C extends Cell> double cellWorth(AbsGrid<C> b, Player player) {
+	private <C extends Cell> double cellWorth(C c, Player player) {
+		if (!(c instanceof AbsGrid)) {
+			Player owner = c.getOwner();
+
+			if (owner == null) return 0.5;
+			if (owner == player) return 1.0;
+			return 0.0; //opponent of player
+		}
+
+		AbsGrid<?> g = (AbsGrid<?>) c;
+
 		double util = 0.0;
 
 		Set<Trio<Position>> winTrios = AbsGrid.winTrios;
 
 		for (Trio<Position> trio: winTrios) {
-			double trioWorth = this.cellWorth(b.getChild(trio.first), player)
-					- this.cellWorth(b.getChild(trio.second), player)
-					- this.cellWorth(b.getChild(trio.third), player);
+			double trioWorth = this.cellWorth(g.getChild(trio.first), player)
+					- this.cellWorth(g.getChild(trio.second), player)
+					- this.cellWorth(g.getChild(trio.third), player);
 
 			util += trioWorth;
 		}
 
 		return util / winTrios.size();
-	}
-
-	private double cellWorth(Cell c, Player player) {
-		Player owner = c.getOwner();
-
-		if (owner == null) return 0.5;
-		if (owner == player) return 1.0;
-		return 0.0; //opponent of player
 	}
 }
