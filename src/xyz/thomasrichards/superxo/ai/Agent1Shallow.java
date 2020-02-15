@@ -1,6 +1,7 @@
 /*
  * This agent uses the weighting of each trio of ways of winning as a heuristic
- * to determine how good the current game state is for a given player
+ * to determine how good the current game state is for a given player.
+ * It only looks at the state of the large game and ignores the content of the small games.
  */
 
 package xyz.thomasrichards.superxo.ai;
@@ -14,9 +15,9 @@ import java.util.Set;
 
 import static java.lang.Double.*;
 
-public class Agent1 extends Agent {
+public class Agent1Shallow extends Agent {
 
-	public Agent1(Player symbol, int depth) {
+	public Agent1Shallow(Player symbol, int depth) {
 		super(depth, symbol);
 	}
 
@@ -49,35 +50,18 @@ public class Agent1 extends Agent {
 
 		Player winner = g.getWinner();
 		if (winner == null)
-			return this.cellWorth(g.getBoard());
+			return this.boardWorth(g.getBoard());
 		if (winner == this.symbol)
 			return POSITIVE_INFINITY;
 
 		return NEGATIVE_INFINITY; // opponent
 	}
 
-	private double cellWorth(Board b) {
-		return this.cellWorth(b, this.symbol) - this.cellWorth(b, this.symbol.opponent());
+	private double boardWorth(Board b) {
+		return this.boardWorth(b, this.symbol) - this.boardWorth(b, this.symbol.opponent());
 	}
 
-	/*
-	 * tactic:
-	 * we have a fraction (between 0 and 1 inclusive) for each cell in a grid
-	 * the number represents its worth i.e. how close to owning the player is.
-	 * The usefulness of each cell depends on how easily filling it in will cause the grid to be won
-	 * multiplying every cell worth in a winning trio shows the liklihood of it happening
-	 * we can't just take an average of all products because:
-	 * XX_
-	 * __X
-	 * __X
-	 * counts 4 that are 1 away, even though only 2 cells cause the grid to be 1 away
-	 * we need to assume because it's a cutoff heuristic that we are choosing a random cell
-	 * so we need to know the liklihood that choosing a cell will cause a win, going in TR above is only worth 1 win
-	 * solution:
-	 * for each cell find the highest chance of winning assuming you have that cell, then multiply it by that cell's own liklihood
-	 * average those chances as all cells are assumed to be equally likley to be chosen
-	 */
-	private <C extends Cell> double cellWorth(AbsGrid<C> b, Player player) {
+	private double boardWorth(Board b, Player player) {
 		double util = 0.0;
 
 		double maxRestOfTrioUtil, firstofTrioUtil, restOfTrioUtil;
@@ -86,7 +70,7 @@ public class Agent1 extends Agent {
 		Set<Position> winDuosSet = winDuos.keySet();
 
 		for (Position p : winDuosSet) {
-			firstofTrioUtil = this.cellWorth(b.getChild(p), player);
+			firstofTrioUtil = this.smallGameWorth(b.getChild(p), player);
 
 			if (firstofTrioUtil == 0.0) continue;
 
@@ -95,7 +79,7 @@ public class Agent1 extends Agent {
 			//get the max util that can be caused by choosing p
 			maxRestOfTrioUtil = 0.0;
 			for (PosDuo pd : pdArr) {
-				restOfTrioUtil = this.cellWorth(b.getChild(pd.first), player) * this.cellWorth(b.getChild(pd.second), player);
+				restOfTrioUtil = this.smallGameWorth(b.getChild(pd.first), player) * this.smallGameWorth(b.getChild(pd.second), player);
 				maxRestOfTrioUtil = max(maxRestOfTrioUtil, restOfTrioUtil);
 			}
 
@@ -105,7 +89,7 @@ public class Agent1 extends Agent {
 		return util / winDuosSet.size(); //should be divide by 9.0, which is the number of positions in a grid
 	}
 
-	private double cellWorth(Cell c, Player player) {
+	private double smallGameWorth(Grid c, Player player) {
 		Player owner = c.getOwner();
 
 		if (owner == null) return 0.5;

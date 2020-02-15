@@ -1,7 +1,7 @@
 package xyz.thomasrichards.superxo.test;
 
 import xyz.thomasrichards.superxo.ai.Agent;
-import xyz.thomasrichards.superxo.ai.Agent1;
+import xyz.thomasrichards.superxo.ai.Agent1Shallow;
 import xyz.thomasrichards.superxo.game.Game;
 import xyz.thomasrichards.superxo.game.Move;
 import xyz.thomasrichards.superxo.game.Player;
@@ -11,8 +11,8 @@ class AgentTest {
 
 		Game g = new Game();
 
-		Agent1 ai1 = new Agent1(Player.X, 3);
-		Agent1 ai2 = new Agent1(Player.O, 1);
+		Agent1Shallow ai1 = new Agent1Shallow(Player.X, 3);
+		Agent1Shallow ai2 = new Agent1Shallow(Player.O, 1);
 
 		Agent turnPlayer;
 		Move move;
