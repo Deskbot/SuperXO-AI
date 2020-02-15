@@ -112,7 +112,7 @@ public class Main {
 	private static Agent makeNewAgent(int aiNum, int depth, Player player) {
 		switch(aiNum) {
 			case 1: return new Agent1Shallow(player, depth);
-			case 2: return new Agent2(player, depth);
+			case 2: return new Agent2Shallow(player, depth);
 			case 3: return new Agent3(player, depth);
 			case 4: return new Agent4(player, depth);
 			case 5: return new Agent5(player, depth);
