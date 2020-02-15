@@ -1,6 +1,6 @@
 /*
- * This agent uses the weighting of each trio of ways of winning as a heuristic
- * to determine how good the current game state is for a given player
+ * That uses the liklihood of winning each empty cell in a grid
+ * and multiplying it by the max utility of each trio it is a part of.
  */
 
 package xyz.thomasrichards.superxo.ai;
@@ -14,9 +14,9 @@ import java.util.Set;
 
 import static java.lang.Double.*;
 
-public class Agent6 extends Agent {
+public class Agent6Shallow extends Agent {
 
-	public Agent6(Player symbol, int depth) {
+	public Agent6Shallow(Player symbol, int depth) {
 		super(depth, symbol);
 	}
 
@@ -49,19 +49,19 @@ public class Agent6 extends Agent {
 
 		Player winner = g.getWinner();
 		if (winner == null)
-			return this.cellWorth(g.getBoard());
+			return this.boardWorth(g.getBoard());
 		if (winner == this.symbol)
 			return POSITIVE_INFINITY;
 
 		return NEGATIVE_INFINITY; // opponent
 	}
 
-	private double cellWorth(Board b) {
-		return this.cellWorth(b, this.symbol) - this.cellWorth(b, this.symbol.opponent());
+	private double boardWorth(Board b) {
+		return this.boardWorth(b, this.symbol) - this.boardWorth(b, this.symbol.opponent());
 	}
 
-	private <C extends Cell> double cellWorth(AbsGrid<C> grid, Player player) {
-		Player owner = grid.getOwner();
+	private double boardWorth(Board board, Player player) {
+		Player owner = board.getOwner();
 
 		if (owner == player) return 1.0;
 		if (owner == player.opponent()) return 0;
@@ -74,18 +74,18 @@ public class Agent6 extends Agent {
 		int cellsLookedAt = 0;
 
 		for (Position p : winDuosSet) {
-			if (grid.getChild(p).getOwner() != null) continue;
+			if (board.getChild(p).getOwner() != null) continue;
 
 			cellsLookedAt++;
 
-			firstofTrioUtil = this.cellWorth(grid.getChild(p), player);
+			firstofTrioUtil = this.gridWorth(board.getChild(p), player);
 
 			if (firstofTrioUtil == 0.0) continue;
 
 			//get the max util that can be caused by choosing p
 			maxRestOfTrioUtil = 0.0;
 			for (PosDuo pd : winDuos.get(p)) {
-				restOfTrioUtil = this.cellWorth(grid.getChild(pd.first), player) * this.cellWorth(grid.getChild(pd.second), player);
+				restOfTrioUtil = this.gridWorth(board.getChild(pd.first), player) * this.gridWorth(board.getChild(pd.second), player);
 				maxRestOfTrioUtil = max(maxRestOfTrioUtil, restOfTrioUtil);
 			}
 
@@ -97,8 +97,8 @@ public class Agent6 extends Agent {
 				: util / cellsLookedAt;
 	}
 
-	private double cellWorth(Cell c, Player player) {
-		Player owner = c.getOwner();
+	private double gridWorth(Grid grid, Player player) {
+		Player owner = grid.getOwner();
 
 		if (owner == null) return 0.5;
 		if (owner == player) return 1.0;
