@@ -2,7 +2,9 @@ package xyz.thomasrichards.superxo.test;
 
 import xyz.thomasrichards.superxo.ai.Agent;
 import xyz.thomasrichards.superxo.ai.Agent2;
-import xyz.thomasrichards.superxo.game.*;
+import xyz.thomasrichards.superxo.game.Game;
+import xyz.thomasrichards.superxo.game.Move;
+import xyz.thomasrichards.superxo.game.Player;
 
 import static xyz.thomasrichards.superxo.game.Position.*;
 

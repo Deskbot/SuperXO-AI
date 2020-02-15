@@ -1,6 +1,9 @@
 package xyz.thomasrichards.superxo.test;
 
-import xyz.thomasrichards.superxo.game.*;
+import xyz.thomasrichards.superxo.game.Game;
+import xyz.thomasrichards.superxo.game.GameAlreadyOverException;
+import xyz.thomasrichards.superxo.game.InvalidMoveException;
+import xyz.thomasrichards.superxo.game.Position;
 
 class SampleGame {
 	public static void main(String[] args) {
