@@ -44,7 +44,7 @@ public class Agent5 extends Agent {
 		return topMoves.get((int) (Math.random() * topMoves.size()));
 	}
 
-	protected Double heuristic(Game g) {
+	protected double heuristic(Game g) {
 		if (g.isDraw())
 			return 0.0;
 

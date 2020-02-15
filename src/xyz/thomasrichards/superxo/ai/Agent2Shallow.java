@@ -37,7 +37,7 @@ public class Agent2Shallow extends Agent {
 		return topMove;
 	}
 
-	protected Double heuristic(Game g) {
+	protected double heuristic(Game g) {
 		if (g.isDraw())
 			return 0.0;
 

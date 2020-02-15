@@ -17,5 +17,5 @@ public abstract class Agent {
 
 	public abstract Move chooseMove(Game game);
 
-	protected abstract Double heuristic(Game game);
+	protected abstract double heuristic(Game game);
 }
