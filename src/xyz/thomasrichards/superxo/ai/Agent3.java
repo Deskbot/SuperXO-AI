@@ -1,5 +1,6 @@
 /*
- * Identical to agent 3 but diffs the trio worth for each player
+ * Identical to Agent1 but diffs the trio worth for each player instead of
+ * diffing the board worth for each player
  */
 
 package xyz.thomasrichards.superxo.ai;
@@ -48,18 +49,28 @@ public class Agent3 extends Agent {
 
         Player winner = g.getWinner();
         if (winner == null)
-            return this.cellWorth(g.getBoard());
+            return this.boardWorth(g.getBoard());
         if (winner == this.symbol)
             return POSITIVE_INFINITY;
 
         return NEGATIVE_INFINITY; // opponent
     }
 
-    private double cellWorth(Board b) {
+    private double boardWorth(Board b) {
         return this.cellWorth(b, this.symbol) - this.cellWorth(b, this.symbol.opponent());
     }
 
-    private <C extends Cell> double cellWorth(AbsGrid<C> b, Player player) {
+    private <C extends Cell> double cellWorth(C c, Player player) {
+        if (!(c instanceof AbsGrid)) {
+            Player owner = c.getOwner();
+
+            if (owner == null) return 0.5;
+            if (owner == player) return 1.0;
+            return 0.0; //opponent of player
+        }
+
+        AbsGrid<?> g = (AbsGrid<?>) c;
+
         double util = 0.0;
 
         double maxRestOfTrioUtil, firstofTrioUtil, restOfTrioUtil;
@@ -68,7 +79,7 @@ public class Agent3 extends Agent {
         Set<Position> winDuosSet = winDuos.keySet();
 
         for (Position p : winDuosSet) {
-            firstofTrioUtil = this.cellWorth(b.getChild(p), player) - this.cellWorth(b.getChild(p), player.opponent());
+            firstofTrioUtil = this.cellWorth(g.getChild(p), player) - this.cellWorth(g.getChild(p), player.opponent());
 
             if (firstofTrioUtil == 0.0) continue;
 
@@ -77,8 +88,8 @@ public class Agent3 extends Agent {
             //get the max util that can be caused by choosing p
             maxRestOfTrioUtil = 0.0;
             for (PosDuo pd : pdArr) {
-                restOfTrioUtil = this.cellWorth(b.getChild(pd.first), player) * this.cellWorth(b.getChild(pd.second), player)
-                        - this.cellWorth(b.getChild(pd.first), player.opponent()) * this.cellWorth(b.getChild(pd.second), player.opponent());
+                restOfTrioUtil = this.cellWorth(g.getChild(pd.first), player) * this.cellWorth(g.getChild(pd.second), player)
+                        - this.cellWorth(g.getChild(pd.first), player.opponent()) * this.cellWorth(g.getChild(pd.second), player.opponent());
                 maxRestOfTrioUtil = max(maxRestOfTrioUtil, restOfTrioUtil);
             }
 
@@ -86,13 +97,5 @@ public class Agent3 extends Agent {
         }
 
         return util / winDuosSet.size(); //should be divide by 9.0, which is the number of positions in a grid
-    }
-
-    private double cellWorth(Cell c, Player player) {
-        Player owner = c.getOwner();
-
-        if (owner == null) return 0.5;
-        if (owner == player) return 1.0;
-        return 0.0; //opponent of player
     }
 }
