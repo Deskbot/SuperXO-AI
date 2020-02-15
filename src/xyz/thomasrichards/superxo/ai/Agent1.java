@@ -14,9 +14,9 @@ import java.util.Set;
 
 import static java.lang.Double.*;
 
-public class Agent1Fixed extends Agent {
+public class Agent1 extends Agent {
 
-	public Agent1Fixed(Player symbol, int depth) {
+	public Agent1(Player symbol, int depth) {
 		super(depth, symbol);
 	}
 
