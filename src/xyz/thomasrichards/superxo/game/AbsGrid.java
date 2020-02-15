@@ -14,7 +14,7 @@ public abstract class AbsGrid<C extends Cell> extends Cell {
 
 	//static
 
-	private static final Set<Trio<Position>> winTrios = new HashSet<>();
+	public static final Set<Trio<Position>> winTrios = new HashSet<>();
 
 	static {
 		winTrios.add(new Trio<>(TL, TM, TR));

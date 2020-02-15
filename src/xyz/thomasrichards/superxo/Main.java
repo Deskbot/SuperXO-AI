@@ -1,8 +1,6 @@
 package xyz.thomasrichards.superxo;
 
-import xyz.thomasrichards.superxo.ai.Agent;
-import xyz.thomasrichards.superxo.ai.Agent1;
-import xyz.thomasrichards.superxo.ai.Agent2;
+import xyz.thomasrichards.superxo.ai.*;
 import xyz.thomasrichards.superxo.game.*;
 
 import java.io.BufferedReader;
@@ -112,9 +110,15 @@ public class Main {
 	}
 
 	private static Agent makeNewAgent(int aiNum, int depth, Player player) {
-		switch(aiNum) {
+		switch (aiNum) {
 			case 1: return new Agent1(player, depth);
-			case 2: return new Agent2(player, depth);
+			case 100: return new Agent1Shallow(player, depth);
+			case 200: return new Agent2Shallow(player, depth);
+			case 3: return new Agent3(player, depth);
+			case 5: return new Agent5(player, depth);
+			case 6: return new Agent6(player, depth);
+			case 600: return new Agent6Shallow(player, depth);
+			case 7: return new Agent7(player, depth);
 		}
 
 		return null;

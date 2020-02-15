@@ -2,7 +2,8 @@ package xyz.thomasrichards.superxo.test;
 
 import xyz.thomasrichards.superxo.game.Game;
 
-import static xyz.thomasrichards.superxo.game.Position.*;
+import static xyz.thomasrichards.superxo.game.Position.TL;
+import static xyz.thomasrichards.superxo.game.Position.TR;
 
 class DuplicateTest {
 	public static void main(String[] args) {

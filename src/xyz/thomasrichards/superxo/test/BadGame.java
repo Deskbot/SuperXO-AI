@@ -1,8 +1,10 @@
 package xyz.thomasrichards.superxo.test;
 
 import xyz.thomasrichards.superxo.ai.Agent;
-import xyz.thomasrichards.superxo.ai.Agent2;
-import xyz.thomasrichards.superxo.game.*;
+import xyz.thomasrichards.superxo.ai.Agent2Shallow;
+import xyz.thomasrichards.superxo.game.Game;
+import xyz.thomasrichards.superxo.game.Move;
+import xyz.thomasrichards.superxo.game.Player;
 
 import static xyz.thomasrichards.superxo.game.Position.*;
 
@@ -39,7 +41,7 @@ class BadGame {
 		g.inputTurn(TM,BR);
 		//g.inputTurn(BR,BR);
 
-		Agent a = new Agent2(Player.O,2);
+		Agent a = new Agent2Shallow(Player.O,2);
 		Move m = a.chooseMove(g);
 
 		System.out.println(m);
