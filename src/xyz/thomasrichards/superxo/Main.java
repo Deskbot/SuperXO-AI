@@ -120,7 +120,6 @@ public class Main {
 			case 7: return new Agent7(player, depth);
 			case 8: return new Agent1(player, depth);
 			case 9: return new Agent6Fixed(player, depth);
-			case 10: return new Agent6FixedAgain(player, depth);
 		}
 
 		return null;
