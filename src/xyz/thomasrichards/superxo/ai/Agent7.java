@@ -9,8 +9,9 @@ import xyz.thomasrichards.superxo.Trio;
 import xyz.thomasrichards.superxo.game.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 
 import static java.lang.Double.NEGATIVE_INFINITY;
 import static java.lang.Double.POSITIVE_INFINITY;
@@ -63,15 +64,21 @@ public class Agent7 extends Agent {
 	}
 
 	private double cellWorth(Board board, Player player) {
-		Optional<Double> max = AbsGrid.winTrios.stream()
-				.map(line -> new Trio<>(
-						cellWorth(board.getChild(line.first), player),
-						cellWorth(board.getChild(line.second), player),
-						cellWorth(board.getChild(line.third), player)))
-				.map(line -> line.first * line.second * line.third)
-				.max(Double::compare);
+		Map<Position, Double> gridValues = new HashMap<>();
+		for (Position p : Position.values()) {
+			Grid child = board.getChild(p);
+			gridValues.put(p, cellWorth(child, player));
+		}
 
-		return max.orElse(0d);
+		double util = 0d;
+
+		for (Trio<Position> line : AbsGrid.winTrios) {
+			util += gridValues.get(line.first)
+					* gridValues.get(line.second)
+					* gridValues.get(line.third);
+		}
+
+		return util;
 	}
 
 	private <C extends Cell> double cellWorth(Grid grid, Player player) {
@@ -98,7 +105,26 @@ public class Agent7 extends Agent {
 		int twoAways = 0;
 		int threeAways = 0;
 
-		for (Long isMine : collect) {
+		for (Trio<Position> line : AbsGrid.winTrios) {
+			ArrayList<Player> lineByPlayers = new ArrayList<>();
+			lineByPlayers.add(grid.getChild(line.first).getOwner());
+			lineByPlayers.add(grid.getChild(line.second).getOwner());
+			lineByPlayers.add(grid.getChild(line.third).getOwner());
+
+			if (lineByPlayers.contains(player.opponent())) {
+				continue;
+			}
+
+			int isMine = 0;
+
+			for (Player p : lineByPlayers) {
+				if (p == player.opponent()) {
+					isMine = 0;
+					break;
+				}
+				isMine++;
+			}
+
 			if (isMine == 2) {
 				oneAways++;
 			} else if (isMine == 1) {

@@ -14,9 +14,9 @@ import java.util.Set;
 
 import static java.lang.Double.*;
 
-public class Agent6 extends Agent {
+public class Agent1Fixed extends Agent {
 
-	public Agent6(Player symbol, int depth) {
+	public Agent1Fixed(Player symbol, int depth) {
 		super(depth, symbol);
 	}
 
@@ -60,48 +60,59 @@ public class Agent6 extends Agent {
 		return this.cellWorth(b, this.symbol) - this.cellWorth(b, this.symbol.opponent());
 	}
 
-	private <C extends Cell> double cellWorth(AbsGrid<C> grid, Player player) {
-		Player owner = grid.getOwner();
+	/*
+	 * tactic:
+	 * we have a fraction (between 0 and 1 inclusive) for each cell in a grid
+	 * the number represents its worth i.e. how close to owning the player is.
+	 * The usefulness of each cell depends on how easily filling it in will cause the grid to be won
+	 * multiplying every cell worth in a winning trio shows the liklihood of it happening
+	 * we can't just take an average of all products because:
+	 * XX_
+	 * __X
+	 * __X
+	 * counts 4 that are 1 away, even though only 2 cells cause the grid to be 1 away
+	 * we need to assume because it's a cutoff heuristic that we are choosing a random cell
+	 * so we need to know the liklihood that choosing a cell will cause a win, going in TR above is only worth 1 win
+	 * solution:
+	 * for each cell find the highest chance of winning assuming you have that cell, then multiply it by that cell's own liklihood
+	 * average those chances as all cells are assumed to be equally likley to be chosen
+	 */
+	private <C extends Cell> double cellWorth(C c, Player player) {
+		if (!(c instanceof AbsGrid)) {
+			Player owner = c.getOwner();
 
-		if (owner == player) return 1.0;
-		if (owner == player.opponent()) return 0;
+			if (owner == null) return 0.5;
+			if (owner == player) return 1.0;
+			return 0.0; //opponent of player
+		}
+
+		AbsGrid<?> g = (AbsGrid<?>) c;
 
 		double util = 0.0;
 
 		double maxRestOfTrioUtil, firstofTrioUtil, restOfTrioUtil;
 		Map<Position, PosDuo[]> winDuos = AbsGrid.winDuos;
+		PosDuo[] pdArr;
 		Set<Position> winDuosSet = winDuos.keySet();
-		int cellsLookedAt = 0;
 
 		for (Position p : winDuosSet) {
-			if (grid.getChild(p).getOwner() != null) continue;
-
-			cellsLookedAt++;
-
-			firstofTrioUtil = this.cellWorth(grid.getChild(p), player);
+			firstofTrioUtil = this.cellWorth(g.getChild(p), player);
 
 			if (firstofTrioUtil == 0.0) continue;
 
+			pdArr = winDuos.get(p);
+
 			//get the max util that can be caused by choosing p
 			maxRestOfTrioUtil = 0.0;
-			for (PosDuo pd : winDuos.get(p)) {
-				restOfTrioUtil = this.cellWorth(grid.getChild(pd.first), player) * this.cellWorth(grid.getChild(pd.second), player);
+			for (PosDuo pd : pdArr) {
+				restOfTrioUtil = this.cellWorth(g.getChild(pd.first), player) * this.cellWorth(g.getChild(pd.second), player);
 				maxRestOfTrioUtil = max(maxRestOfTrioUtil, restOfTrioUtil);
 			}
 
 			util += firstofTrioUtil * maxRestOfTrioUtil;
 		}
 
-		return cellsLookedAt == 0
-				? 0.5
-				: util / cellsLookedAt;
+		return util / winDuosSet.size(); //should be divide by 9.0, which is the number of positions in a grid
 	}
 
-	private double cellWorth(Cell c, Player player) {
-		Player owner = c.getOwner();
-
-		if (owner == null) return 0.5;
-		if (owner == player) return 1.0;
-		return 0.0; //opponent of player
-	}
 }

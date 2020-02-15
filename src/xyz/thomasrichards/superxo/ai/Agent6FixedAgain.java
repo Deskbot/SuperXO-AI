@@ -14,9 +14,9 @@ import java.util.Set;
 
 import static java.lang.Double.*;
 
-public class Agent6 extends Agent {
+public class Agent6FixedAgain extends Agent {
 
-	public Agent6(Player symbol, int depth) {
+	public Agent6FixedAgain(Player symbol, int depth) {
 		super(depth, symbol);
 	}
 
@@ -57,10 +57,20 @@ public class Agent6 extends Agent {
 	}
 
 	private double cellWorth(Board b) {
-		return this.cellWorth(b, this.symbol) - this.cellWorth(b, this.symbol.opponent());
+		return this.cellWorth(b, this.symbol);
 	}
 
-	private <C extends Cell> double cellWorth(AbsGrid<C> grid, Player player) {
+	private <C extends Cell> double cellWorth(C c, Player player) {
+		if (!(c instanceof AbsGrid)) {
+			Player owner = c.getOwner();
+
+			if (owner == null) return 0.5;
+			if (owner == player) return 1.0;
+			return 0.0; //opponent of player
+		}
+
+		AbsGrid<?> grid = (AbsGrid<?>) c;
+
 		Player owner = grid.getOwner();
 
 		if (owner == player) return 1.0;
@@ -95,13 +105,5 @@ public class Agent6 extends Agent {
 		return cellsLookedAt == 0
 				? 0.5
 				: util / cellsLookedAt;
-	}
-
-	private double cellWorth(Cell c, Player player) {
-		Player owner = c.getOwner();
-
-		if (owner == null) return 0.5;
-		if (owner == player) return 1.0;
-		return 0.0; //opponent of player
 	}
 }

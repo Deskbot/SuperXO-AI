@@ -118,6 +118,9 @@ public class Main {
 			case 5: return new Agent5(player, depth);
 			case 6: return new Agent6(player, depth);
 			case 7: return new Agent7(player, depth);
+			case 8: return new Agent1Fixed(player, depth);
+			case 9: return new Agent6Fixed(player, depth);
+			case 10: return new Agent6FixedAgain(player, depth);
 		}
 
 		return null;
