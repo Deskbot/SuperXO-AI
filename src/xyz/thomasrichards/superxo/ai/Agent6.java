@@ -1,6 +1,6 @@
 /*
- * This agent uses the weighting of each trio of ways of winning as a heuristic
- * to determine how good the current game state is for a given player
+ * That uses the liklihood of winning each empty cell in a grid
+ * and multiplying it by the max utility of each trio it is a part of.
  */
 
 package xyz.thomasrichards.superxo.ai;
@@ -14,9 +14,9 @@ import java.util.Set;
 
 import static java.lang.Double.*;
 
-public class Agent6Fixed extends Agent {
+public class Agent6 extends Agent {
 
-	public Agent6Fixed(Player symbol, int depth) {
+	public Agent6(Player symbol, int depth) {
 		super(depth, symbol);
 	}
 
@@ -49,14 +49,14 @@ public class Agent6Fixed extends Agent {
 
 		Player winner = g.getWinner();
 		if (winner == null)
-			return this.cellWorth(g.getBoard());
+			return this.boardWorth(g.getBoard());
 		if (winner == this.symbol)
 			return POSITIVE_INFINITY;
 
 		return NEGATIVE_INFINITY; // opponent
 	}
 
-	private double cellWorth(Board b) {
+	private double boardWorth(Board b) {
 		return this.cellWorth(b, this.symbol) - this.cellWorth(b, this.symbol.opponent());
 	}
 
